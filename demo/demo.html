@@ -200,7 +200,7 @@ body.tour-on .phone-wrap{justify-content:flex-start;padding-left:max(16px,calc(5
   </div>
 </section>
 
-<div class="freebar" id="freebar" hidden><span>Modo libre: pícale a lo que quieras</span><button id="fbScreens">Pantallas</button><button class="p" id="fbTour">Volver al recorrido</button></div>
+<div class="freebar" id="freebar" hidden><span>Estás en modo libre, pícale a lo que quieras</span><button id="fbScreens">Pantallas</button><button class="p" id="fbTour">Volver al recorrido</button></div>
 
 <div class="toast" id="toast" role="status"><span id="toastT"></span></div>
 
@@ -211,7 +211,7 @@ body.tour-on .phone-wrap{justify-content:flex-start;padding-left:max(16px,calc(5
     <p>Te llevamos paso a paso por las pantallas. Pasa el mouse o toca los <b style="color:var(--amber-deep)">números</b> para ver qué es cada cosa, y cuando te lo pida, pícale a lo que está marcado para avanzar.</p>
     <div class="doors">
       <button id="wAdmin"><span class="ic"><svg><use href="#i-box"/></svg></span><span><b>Como equipo de Cajas</b><small>Balance, perfil del cliente, reportar movimientos y enviarlos a IFCO.</small></span></button>
-      <button id="wPortal"><span class="ic"><svg><use href="#i-store"/></svg></span><span><b>Como cliente</b><small>Su portal: sus números, sus facturas, su estado de cuenta y la tienda en línea.</small></span></button>
+      <button id="wPortal"><span class="ic"><svg><use href="#i-store"/></svg></span><span><b>Como cliente</b><small>Su portal, con sus números, sus facturas, su estado de cuenta y la tienda en línea.</small></span></button>
     </div>
     <button class="alt" id="wFree">Prefiero explorar por mi cuenta</button>
     <p class="note">Son pantallas reales del diseño con datos de ejemplo. Nada se guarda ni se envía.</p>
@@ -239,23 +239,23 @@ const T = {
   {s:'a_login',t:'Así entras a MyCajas',x:'Cada persona de Cajas entra con su cuenta de Google de Cajas. No hay usuarios nuevos que recordar, y cada quien ve lo que le corresponde.',
    pts:[[{t:'Continuar con Google'},'Tu cuenta de Google de Cajas es tu acceso.']],
    act:{q:{t:'Continuar con Google'},go:'a_balance',say:'Pícale a «Continuar con Google» para entrar.'}},
-  {s:'a_balance',t:'Balance consolidado',x:'La foto de toda la operación: cada cuenta con su balance, sus días y su semáforo, al día. Pasa el mouse o toca cada número.',
+  {s:'a_balance',t:'Balance consolidado',x:'Aquí ves la foto de toda la operación, con cada cuenta, su balance, sus días y su semáforo al día. Pasa el mouse o toca cada número.',
    pts:[[{t:'N Balance'},'Todas las cajas en poder de las cuentas, incluyendo lo que todavía está en revisión con IFCO.'],
         [{t:'DOH'},'<b>Días en mano</b>: cuántos días de cajas tienen las cuentas en su poder. Se mide como lo mide IFCO.'],
         [{t:'DOS'},'<b>Días de suministro</b>: a qué ritmo se están regresando las cajas.'],
-        [{t:'Requieren atención'},'Las cuentas en alerta o críticas: las que conviene revisar primero.'],
+        [{t:'Requieren atención'},'Estas son las cuentas en alerta o críticas, las que conviene revisar primero.'],
         [{ph:'Cliente o IFCO no.'},'Busca cualquier cuenta por nombre o número IFCO.'],
-        [{t:'Sano'},'El semáforo: un clic y ves sólo las sanas, normales, en alerta o críticas.'],
+        [{t:'Sano'},'Con el semáforo, en un clic ves sólo las sanas, normales, en alerta o críticas.'],
         [{t:'Columnas'},'Elige qué columnas ver y exporta lo que estés viendo a Excel.']],
    act:{q:{t:'Cliente A'},go:'a_perfil',say:'Pícale a «Cliente A» para abrir su perfil.'}},
-  {s:'a_perfil',t:'Perfil del cliente',x:'Todo de un cliente en un solo lugar: sus datos, su balance, sus días y su saldo por modelo.',
+  {s:'a_perfil',t:'Perfil del cliente',x:'Aquí está todo de un cliente en un solo lugar, con sus datos, su balance, sus días y su saldo por modelo.',
    pts:[[{t:'Alerta'},'Su semáforo, para saber de un vistazo cómo va.'],
         [{t:'Datos del cliente'},'Sus datos, su commodity y su analista asignado.'],
         [{t:'Yellow'},'Su balance aprobado, lo que va en revisión y sus entradas y salidas de 90 días.'],
         [{t:'DOH'},'Días en mano y de suministro, con su semáforo.'],
-        [{t:'Saldos por modelo'},'Su saldo por modelo de caja: el nuestro (interno) y el de IFCO.'],
+        [{t:'Saldos por modelo'},'Su saldo por modelo de caja, el nuestro (interno) y el de IFCO.'],
         [{t:'Cuentas IFCO'},'Todas sus cuentas IFCO en un solo perfil.'],
-        [{t:'Cobranza'},'Lo que viene: su cobranza, tickets y estados de cuenta aquí mismo.']],
+        [{t:'Cobranza'},'Más adelante también vas a ver aquí mismo su cobranza, tickets y estados de cuenta.']],
    act:{q:{t:'Movimientos',role:'tab'},go:'a_perfil_mov',say:'Pícale a la pestaña «Movimientos».'}},
   {s:'a_perfil_mov',t:'Sus movimientos',x:'Cada entrada y salida del cliente, con su estatus ante IFCO. Se busca y se filtra como en Excel.',
    pts:[[{t:'Entradas'},'Entradas, salidas y flujo neto del periodo.'],
@@ -265,20 +265,20 @@ const T = {
         [{t:'yellow'},'El estatus que da IFCO: amarillo en revisión, verde aprobado, rojo rechazado.'],
         [{t:'Exportar a Excel'},'Llévate lo filtrado a Excel.']],
    act:{q:{t:'412300871'},modal:'m_ver_mov',say:'Pícale a un movimiento para ver su detalle.'}},
-  {s:'a_perfil_mov',modal:'m_ver_mov',t:'El detalle de un movimiento',x:'Cada movimiento tiene su historia completa: cuenta y contraparte, fechas, cantidades, de dónde vino y su estatus. Desde aquí se puede corregir o cancelar, y todo queda registrado.',pts:[]},
+  {s:'a_perfil_mov',modal:'m_ver_mov',t:'El detalle de un movimiento',x:'Cada movimiento tiene su historia completa, con cuenta y contraparte, fechas, cantidades, de dónde vino y su estatus. Desde aquí se puede corregir o cancelar, y todo queda registrado.',pts:[]},
   {s:'a_perfil_mov',t:'Vamos al EDI',x:'El EDI es donde todo lo reportado se revisa y se envía a IFCO. Está en el menú de la izquierda, dentro de IFCO.',pts:[],
    act:{q:{t:'IFCO',nav:true},go:'a_edi',say:'Pícale a «IFCO» en el menú.'},mAct:{q:{aria:'Abrir el menú'},go:'a_edi',say:'Pícale al botón del menú.'}},
   {s:'a_edi',t:'EDI: lo que va a IFCO',x:'Todo lo que se reporta llega aquí, venga de donde venga, y desde aquí se envía a IFCO.',
-   pts:[[{t:'Crear movimiento'},'Aquí se reportan movimientos: a mano o con un Excel.'],
+   pts:[[{t:'Crear movimiento'},'Aquí se reportan movimientos, a mano o con un Excel.'],
         [{t:'Pendientes de envío'},'Lo que está listo para enviarse. En «En tránsito» queda lo que ya se envió.'],
-        [{t:'Tipo y fuente'},'De dónde vino cada movimiento: CONTPAQi, el cliente, un Excel, el analista o un ajuste.'],
+        [{t:'Tipo y fuente'},'Aquí ves de dónde vino cada movimiento, ya sea CONTPAQi, el cliente, un Excel, el analista o un ajuste.'],
         [{t:'Revisar'},'Lo que no cuadra (un número repetido, una cuenta que no existe) se marca antes de enviarlo.'],
         [{t:'Seleccionar todos'},'Marca lo que vas a enviar.']],
-   act:{q:{t:'Crear movimiento'},go:'a_edi_crear',say:'Veamos cómo se reporta: pícale a «Crear movimiento».'}},
+   act:{q:{t:'Crear movimiento'},go:'a_edi_crear',say:'Para ver cómo se reporta, pícale a «Crear movimiento».'}},
   {s:'a_edi_crear',t:'Dos formas de reportar',x:'A mano, cuando son pocos, o subiendo un Excel cuando son muchos.',
    pts:[[{t:'Captura manual'},'Para capturar a mano, hasta cinco a la vez.'],[{t:'Importar CSV'},'Para subir un Excel con muchos movimientos.']],
    act:{q:{t:'Captura manual'},go:'a_manual',say:'Pícale a «Captura manual».'}},
-  {s:'a_manual',t:'Captura manual',x:'Un asistente sencillo: las cuentas se autocompletan y los avisos salen al momento.',
+  {s:'a_manual',t:'Captura manual',x:'Es un asistente sencillo. Las cuentas se autocompletan y los avisos salen al momento.',
    pts:[[{t:'Cuenta'},'Las cuentas se autocompletan del catálogo; lo que no existe se marca para el analista.'],
         [{t:'Más campos'},'Campos extra sólo cuando hacen falta.'],
         [{t:'Continuar'},'Antes de crear, MyCajas revisa todo.']],
@@ -288,33 +288,33 @@ const T = {
         [{t:'Revisar'},'Lo dudoso queda marcado para revisarlo.'],
         [{t:'Crear 3 movimientos'},'Lo bueno se crea y queda listo en el EDI.']],
    act:{q:{t:'Crear 3 movimientos'},go:'a_csv_rev',toast:'Listo, se crearon 3 movimientos. Ahora veamos la carga por Excel.',say:'Pícale a «Crear 3 movimientos».'}},
-  {s:'a_csv_rev',t:'Si son muchos: un Excel',x:'Así se ve cuando se sube un Excel con 48 movimientos. Lo nuevo se crea, lo repetido se ignora y lo que tiene error se explica, sin frenar la carga.',
+  {s:'a_csv_rev',t:'Si son muchos, con un Excel',x:'Así se ve cuando se sube un Excel con 48 movimientos. Lo nuevo se crea, lo repetido se ignora y lo que tiene error se explica, sin frenar la carga.',
    pts:[[{t:'Con errores'},'Lo que tiene errores se marca y se explica.'],
-        [{t:'Ya cargados'},'Lo que ya estaba se ignora solo: se puede volver a subir el mismo Excel actualizado.'],
+        [{t:'Ya cargados'},'Lo que ya estaba se ignora solo, así que se puede volver a subir el mismo Excel actualizado.'],
         [{t:'Descargar errores'},'Descarga sólo lo que hay que corregir.'],
         [{t:'Crear 40 movimientos'},'Lo bueno se crea de un jalón.']],
    act:{q:{t:'Crear 40 movimientos'},go:'a_edi',toast:'Se crearon 40 movimientos y ya están en el EDI.',say:'Pícale a «Crear 40 movimientos».'}},
   {s:'a_edi',t:'Enviar a IFCO',x:'Ya hay tres movimientos marcados. Ahora se envían a IFCO.',pts:[[{t:'Seleccionar todos'},'Los marcados son los que se van a enviar.']],
    act:{q:{t:'Enviar a IFCO'},go:'a_edi_enviar',say:'Pícale a «Enviar a IFCO».'}},
-  {s:'a_edi_enviar',t:'Un último vistazo',x:'Antes de enviar, MyCajas te dice exactamente qué va: cuenta, contraparte, modelo y cantidad. Nada se envía sin confirmar.',
+  {s:'a_edi_enviar',t:'Un último vistazo',x:'Antes de enviar, MyCajas te dice exactamente qué va, con cuenta, contraparte, modelo y cantidad. Nada se envía sin confirmar.',
    pts:[[{t:'Regresar'},'Si algo no está bien, regresas y lo corriges.']],
    act:{q:{t:'Enviar a IFCO'},go:'a_edi_transito',toast:'Enviados a IFCO. Ahora esperan su confirmación.',say:'Pícale a «Enviar a IFCO» para confirmar.'}},
-  {s:'a_edi_transito',t:'En tránsito',x:'Lo enviado espera aquí a que IFCO lo confirme. Cuando IFCO responde, MyCajas compara movimiento por movimiento: lo que coincide se aprueba y cuenta en el balance; lo que no, pasa a conciliación para corregirse.',
+  {s:'a_edi_transito',t:'En tránsito',x:'Lo enviado espera aquí a que IFCO lo confirme. Cuando IFCO responde, MyCajas compara movimiento por movimiento. Lo que coincide se aprueba y cuenta en el balance, y lo que no pasa a conciliación para corregirse.',
    pts:[[{t:'yellow'},'En revisión con IFCO: ya se ve, pero todavía no cuenta en el balance confirmado.'],
         [{t:'En tránsito',role:'tab'},'Si IFCO no confirma en 48 horas, se avisa y pasa a conciliación.']]},
   {s:'a_pedidos',t:'Los pedidos de los clientes',x:'Cuando un cliente pide cajas en su portal, el pedido llega aquí con sus métricas y su crédito, para aprobarlo o rechazarlo. El cliente ve la respuesta en su portal.',
    pts:[[{t:'Por aprobar'},'Los pedidos que esperan respuesta.'],[{t:'Aprobar'},'Se aprueba o se rechaza ahí mismo; si se rechaza, el motivo le llega al vendedor.'],[{t:'Cómo lo recibe'},'Si pasa por las cajas o se las envían, y cómo paga.']]},
   {s:'a_clientes',t:'Clientes',x:'El directorio de clientes, rápido de buscar y de filtrar.',
-   pts:[[{ph:'Nombre, código o IFCO no.'},'Busca a cualquier cliente.'],[{t:'Commodity'},'Filtra por lo que siembran: fresa, aguacate, tomate…'],[{t:'Nuevo cliente'},'Da de alta un cliente.'],[{t:'Alerta'},'Su semáforo, a la vista.']]},
+   pts:[[{ph:'Nombre, código o IFCO no.'},'Busca a cualquier cliente.'],[{t:'Commodity'},'Filtra por lo que siembran, como fresa, aguacate o tomate.'],[{t:'Nuevo cliente'},'Da de alta un cliente.'],[{t:'Alerta'},'Su semáforo, a la vista.']]},
   {s:'a_perfil',dev:'m',t:'Y en tu teléfono',x:'Todo esto también está diseñado para el celular. Arriba puedes cambiar entre Escritorio y Teléfono cuando quieras.',
    pts:[[{aria:'Abrir el menú'},'Aquí se abre el menú para moverte entre secciones.'],[{aria:'Notificaciones'},'Tus avisos.'],[{t:'Alerta'},'El semáforo del cliente, igual que en la compu.']]},
-  {s:'a_balance',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal. Sigue picándole a lo que quieras para descubrir más: almacenes, modelos, analistas, Balance IFCO… O haz el recorrido del portal del cliente.',pts:[]}
+  {s:'a_balance',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal. Sigue picándole a lo que quieras para descubrir más, como almacenes, modelos, analistas o el Balance IFCO. O haz el recorrido del portal del cliente.',pts:[]}
  ]},
  portal:{name:'Recorrido · Portal del cliente', steps:[
   {s:'p_login',t:'Así entra el cliente',x:'Cada cliente recibe una invitación y entra con Google, Microsoft o su correo.',pts:[[{t:'Continuar con Google'},'Puede entrar con su cuenta de Google o Microsoft, o con su correo.']],
    act:{q:{t:'Entrar'},go:'p_inicio',say:'Pícale a «Entrar».'}},
-  {s:'p_inicio',t:'El inicio del cliente',x:'Lo primero que ve: sus números y lo que le toca hoy.',
-   pts:[[{t:'Balance'},'Cuántas cajas tiene en su poder.'],[{t:'Días desde la última salida'},'Le recuerda reportar sus salidas a tiempo.'],[{t:'Lo que te toca'},'Lo que tiene pendiente: reportar, pagar, recoger su pedido.'],[{t:'Lo más reciente'},'Sus últimos avisos: movimientos aprobados, en conciliación, su estado de cuenta.'],[{t:'Balance por modelo'},'Su saldo por modelo de caja.']],
+  {s:'p_inicio',t:'El inicio del cliente',x:'Lo primero que ve son sus números y lo que le toca hoy.',
+   pts:[[{t:'Balance'},'Cuántas cajas tiene en su poder.'],[{t:'Días desde la última salida'},'Le recuerda reportar sus salidas a tiempo.'],[{t:'Lo que te toca'},'Aquí está lo que tiene pendiente, como reportar, pagar o recoger su pedido.'],[{t:'Lo más reciente'},'Sus últimos avisos, como movimientos aprobados, en conciliación o su estado de cuenta.'],[{t:'Balance por modelo'},'Su saldo por modelo de caja.']],
    act:{q:{t:'Movimientos',nav:true},go:'p_mov',say:'Pícale a «Movimientos» en el menú.'},mAct:{q:{t:'Balance',role:'tab'},go:'p_mov',say:'Pícale a la pestaña «Balance».'}},
   {s:'p_mov',t:'Sus cajas y sus días',x:'Su balance, sus días y consejos claros para mejorar sus números.',
    pts:[[{t:'Días en mano'},'Sus días, con el mismo criterio de IFCO y su semáforo.'],[{t:'Para mejorar tus días'},'Consejos sencillos para mejorar sus números.'],[{t:'Saldos por modelo'},'Su saldo por modelo de caja.'],[{t:'Reportar movimientos'},'Reporta sus entradas y salidas él mismo.']],
@@ -327,7 +327,7 @@ const T = {
   {s:'p_fin',t:'Sus finanzas',x:'Su línea de crédito, lo que debe, lo vencido y lo que vence pronto.',
    pts:[[{t:'Saldo pendiente'},'Lo que debe, lo vencido y lo que vence esta semana.'],[{t:'Línea de crédito'},'Cuánto ha usado y cuánto le queda.'],[{t:'Avisos de cobranza'},'Recordatorios para estar al corriente.'],[{t:'Generar estado de cuenta'},'Genera su estado de cuenta cuando quiera.']],
    act:{q:{t:'Facturas',role:'tab'},go:'p_fact',say:'Pícale a la pestaña «Facturas».'}},
-  {s:'p_fact',t:'Sus facturas',x:'Todas sus facturas: pendientes, vencidas y pagadas.',
+  {s:'p_fact',t:'Sus facturas',x:'Todas sus facturas, tanto pendientes como vencidas y pagadas.',
    pts:[[{t:'Vencidas'},'Filtra sus facturas por estatus.'],[{t:'Vencido'},'El estatus de cada factura.']],
    act:{q:{t:'C 20437'},go:'p_fact_abierta',say:'Pícale a la factura «C 20437».'}},
   {s:'p_fact_abierta',t:'La factura, a la mano',x:'Se abre aquí mismo y se descarga en PDF y XML.',pts:[],
@@ -335,7 +335,7 @@ const T = {
   {s:'p_docs',t:'Estados de cuenta y documentos',x:'Sus estados de cuenta de cada mes y sus documentos, para estar siempre en regla.',
    pts:[[{t:'Mis documentos'},'Sus documentos y los de Cajas, siempre al día.']],
    act:{q:{t:'Octubre 2026'},modal:'m_edc1',say:'Pícale al estado de cuenta de octubre.'}},
-  {s:'p_docs',modal:'m_edc1',t:'Su estado de cuenta',x:'Su cuenta con Cajas y sus cajas en un PDF con el diseño de Cajas: lo facturado, lo pagado, su línea de crédito, su balance y sus días.',pts:[]},
+  {s:'p_docs',modal:'m_edc1',t:'Su estado de cuenta',x:'Su cuenta con Cajas y sus cajas en un PDF con el diseño de Cajas, con lo facturado, lo pagado, su línea de crédito, su balance y sus días.',pts:[]},
   {s:'p_cat',t:'La tienda en línea',x:'El cliente pide sus cajas en línea, viendo su balance de cada modelo.',
    pts:[[{t:'RPC IFCO'},'Por ahora, cajas IFCO; después, cartón y tarimas.'],[{t:'Tu balance'},'Ve su balance del modelo al pedir.']],
    act:{q:{t:'Pedir'},go:'p_modelo',say:'Pícale a «Pedir».'}},
@@ -349,7 +349,7 @@ const T = {
   {s:'a_pedidos',t:'Del lado de Cajas',x:'El pedido llega a MyCajas y se aprueba o se rechaza. El cliente ve la respuesta en su portal.',pts:[[{t:'Aprobar'},'Aprobar o rechazar ahí mismo.']]},
   {s:'p_inicio',dev:'m',t:'En el teléfono del cliente',x:'El portal también está pensado para el celular. Arriba puedes cambiar entre Escritorio y Teléfono cuando quieras.',
    pts:[[{aria:'Abrir el menú'},'El menú para moverse entre secciones.'],[{t:'Reportar salidas'},'Lo que le toca, a un toque.']]},
-  {s:'p_inicio',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal del portal. Sigue picándole para descubrir más: pagos, mis pedidos, notificaciones… O haz el recorrido del equipo de Cajas.',pts:[]}
+  {s:'p_inicio',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal del portal. Sigue picándole para descubrir más, como pagos, mis pedidos o notificaciones. O haz el recorrido del equipo de Cajas.',pts:[]}
  ]}
 };
 
@@ -528,7 +528,7 @@ document.getElementById('tMin').onclick=()=>tour.classList.toggle('min');
 function goFree(){
   st.mode='free'; tour.hidden=true; document.body.classList.remove('tour-on'); document.getElementById('freebar').hidden=false; closeOverlays();
   if(ovEl) ovEl.innerHTML=''; setSeg();
-  toast('Modo libre: pícale a lo que quieras. Puedes volver al recorrido cuando quieras.');
+  toast('Estás en modo libre, así que pícale a lo que quieras. Puedes volver al recorrido cuando quieras.');
 }
 document.getElementById('fbTour').onclick=()=>startTour(appOf(st.cur),0);
 document.getElementById('fbScreens').onclick=()=>screensSheet();
@@ -541,7 +541,7 @@ function onClick(e){
     if(actEl && (actEl.contains(t)||t.contains(actEl))){ doAction(); return; }
     // ¿cerca del objetivo?
     if(actEl){ const r=actEl.getBoundingClientRect(); if(e.clientX>=r.left-6&&e.clientX<=r.right+6&&e.clientY>=r.top-6&&e.clientY<=r.bottom+6){ doAction(); return; } }
-    if(actEl){ toast('Sigue el recorrido: pícale a lo que está marcado, o usa «Siguiente».'); const ring=ovEl.querySelector('.ring'); if(ring){ring.style.animation='none';void ring.offsetWidth;ring.style.animation='';} }
+    if(actEl){ toast('Para seguir el recorrido, pícale a lo que está marcado o usa «Siguiente».'); const ring=ovEl.querySelector('.ring'); if(ring){ring.style.animation='none';void ring.offsetWidth;ring.style.animation='';} }
     else toast('Usa «Siguiente» para continuar el recorrido.');
     return;
   }
@@ -591,7 +591,7 @@ const R = {
  a_edi_crear:[[/captura manual/i,'a_manual'],[/importar csv/i,'a_csv'],[/^pendientes/i,'a_edi'],[/^en tr[aá]nsito/i,'a_edi_transito']],
  a_edi_enviar:[[/^regresar/i,'a_edi'],[/^enviar a ifco/i,()=>{ toast('Enviados a IFCO. Ahora esperan su confirmación.'); go('a_edi_transito'); }]],
  a_edi_transito:[[/^pendientes/i,'a_edi'],[/^crear movimiento/i,'a_edi_crear']],
- a_edi_elim:[[/^pendientes/i,'a_edi'],[/^en tr[aá]nsito/i,'a_edi_transito'],[/restaurar/i,'toast:Restaurado: regresa a Pendientes de envío.']],
+ a_edi_elim:[[/^pendientes/i,'a_edi'],[/^en tr[aá]nsito/i,'a_edi_transito'],[/restaurar/i,'toast:Se restauró y regresó a Pendientes de envío.']],
  a_manual:[[/^continuar/i,'a_manual_rev'],[/^cancelar/i,'a_edi'],[/^pendientes/i,'a_edi']],
  a_manual_rev:[[/^regresar/i,'a_manual'],[/^crear \d+/i,()=>{ toast('Se crearon 3 movimientos. Ya están listos en el EDI.'); go('a_edi'); }]],
  a_csv:[[/elegir archivo|^continuar/i,()=>{ toast('Leyendo el archivo… 48 movimientos encontrados.'); go('a_csv_rev'); }],[/^cancelar/i,'a_edi']],
@@ -631,7 +631,7 @@ function freeClick(e){
   const el=t.closest('a,button,[role=tab],[role=menuitem],[role=option]');
   const aria=(el&&el.getAttribute('aria-label'))||'';
   if(/men[uú]/i.test(aria)){ menuSheet(); return; }
-  if(/notificaci/i.test(aria)){ if(app==='portal') act(st.dev==='m'?'p_notif':'m_campana'); else toast('Aquí te llegan los avisos: movimientos por revisar, conciliaciones y pedidos.'); return; }
+  if(/notificaci/i.test(aria)){ if(app==='portal') act(st.dev==='m'?'p_notif':'m_campana'); else toast('Aquí te llegan los avisos de movimientos por revisar, conciliaciones y pedidos.'); return; }
   const nav=t.closest('nav');
   if(nav && el){
     const tx=labelOf(el);
@@ -650,7 +650,7 @@ function freeClick(e){
     if(!isDots && (t.closest('tbody tr') || (el && el.tagName==='A' && !nav) || /^ver (perfil|detalle)/i.test(aria) || (st.dev==='m' && findCard(t)))){ act(dr); return; }
   }
   if(el){ const tx=labelOf(el);
-    if(/^[⋯…]$/.test(tx)) { toast('Desde este menú: ver el detalle, corregir o cancelar.'); return; }
+    if(/^[⋯…]$/.test(tx)) { toast('Desde este menú puedes ver el detalle, corregir o cancelar.'); return; }
     if(/post mvp|próximamente/i.test(tx)) { toast(POST); return; }
     toast('Esta opción todavía no hace nada en el demo.');
   }
