@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyCajas · Recorrido</title>
+<link rel="icon" href="img/logo.png">
+<style>
+:root{
+  --green:#5E7A3A;--green-deep:#3F5A22;--green-title:#6F8A4A;--green-soft:#8FA866;--wash:#F6F9F1;--wash-2:#E9F2DF;
+  --bg:#ECEEEA;--ink:#1B1C1D;--muted:#5A6166;--faint:#7A8186;--hair:#DEDBD3;--amber:#C68A3F;--amber-deep:#A86E26;--brown:#94622A;--cream:#FBF6EE;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+.tabs-sin-barra{scrollbar-width:none}.tabs-sin-barra::-webkit-scrollbar{display:none}
+.tel-col>*{flex-shrink:0}
+#frame th{position:sticky;top:0}
+#frame [role=tooltip]{display:none!important}
+#frame a,#frame button,#frame [role=tab],#frame tbody tr,#frame label{cursor:pointer}
+
+/* barra */
+.bar{height:60px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#fff;border-bottom:1px solid #E3E6E4;position:relative;z-index:40}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;flex:0 0 auto}
+.logo img{width:34px;height:34px;border-radius:50%}
+.logo b{font-size:17px;letter-spacing:-.02em}.logo b i{font-style:normal;color:var(--amber)}.logo b span{color:var(--green-title)}
+.seg{display:inline-flex;gap:3px;padding:3px;border-radius:12px;background:#EEF0EF;flex:0 0 auto}
+.seg button{border:0;background:transparent;border-radius:9px;padding:8px 12px;font-size:13.5px;font-weight:650;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:6px}
+.seg button svg{width:16px;height:16px}
+.seg button[aria-pressed=true]{background:#fff;color:var(--green-deep);box-shadow:0 1px 3px rgba(16,24,40,.12)}
+.sp{flex:1}
+.ghost{border:1px solid #DEDBD3;background:#fff;border-radius:10px;padding:8px 12px;font-size:13.5px;font-weight:650;color:var(--green-deep);display:flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap}
+.ghost svg{width:16px;height:16px}
+@media (max-width:900px){
+  .bar{height:auto;flex-wrap:wrap;padding:8px 10px;gap:8px}
+  .bar .sp{display:none}
+  .seg button{padding:7px 9px;font-size:12.5px}
+  .hide-sm{display:none!important}
+}
+
+/* área */
+#view{position:relative;overflow:auto;height:calc(100vh - 60px);-webkit-overflow-scrolling:touch}
+@media (max-width:900px){#view{height:calc(100vh - var(--barh,104px))}}
+.desk{padding:20px 20px 260px;display:flex;justify-content:center}
+.canvas{position:relative;background:#F7F8F6;box-shadow:0 2px 6px rgba(16,24,40,.08),0 18px 48px rgba(16,24,40,.14);border-radius:12px;overflow:hidden}
+#frame{transition:opacity .18s}
+#frame.fading{opacity:.2}
+#ov{position:absolute;left:0;top:0;width:0;height:0;z-index:20;pointer-events:none}
+#ov>*{pointer-events:auto}
+
+/* iPhone */
+.phone-wrap{display:flex;justify-content:center;padding:20px 16px 40px}
+body.tour-on .phone-wrap{justify-content:flex-start;padding-left:max(16px,calc(50% - 420px))}
+@media (max-width:1100px){body.tour-on .phone-wrap{justify-content:center;padding-left:16px}}
+.iphone{position:relative;width:414px;height:868px;border-radius:64px;background:#1B1C1D;padding:12px;box-shadow:0 0 0 2px #3a3c3e,0 30px 80px rgba(16,24,40,.35);flex:0 0 auto}
+.screen{position:relative;width:390px;height:844px;border-radius:52px;overflow:hidden;background:#F7F8F6}
+.status{position:absolute;top:0;left:0;right:0;height:50px;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 38px;font-size:15px;font-weight:650;background:rgba(247,248,246,.94)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000;z-index:31}
+.scr{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-top:50px;scrollbar-width:none}
+.scr::-webkit-scrollbar{display:none}
+.home{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#1B1C1D;z-index:31;opacity:.85}
+.real-phone .phone-wrap{padding:0;display:block}
+.real-phone .iphone{width:100%;height:auto;border-radius:0;padding:0;background:none;box-shadow:none}
+.real-phone .island,.real-phone .status,.real-phone .home{display:none}
+.real-phone .screen{width:100%;height:auto;border-radius:0;overflow:visible}
+.real-phone .scr{position:relative;inset:auto;padding:0 0 280px;overflow:visible}
+
+/* marcadores */
+.mk{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:var(--amber);color:#fff;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.28);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;cursor:pointer;padding:0}
+.mk::before{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid var(--amber);opacity:0;animation:ping 2.4s infinite}
+.mk.on{background:var(--green);transform:scale(1.18)}
+.mk.on::before{border-color:var(--green)}
+@keyframes ping{0%{opacity:.7;transform:scale(.7)}80%,100%{opacity:0;transform:scale(1.5)}}
+.bub{position:absolute;max-width:290px;width:max-content;background:#1B1C1D;color:#fff;border-radius:12px;padding:10px 13px;font-size:14px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.28);pointer-events:none!important;z-index:5}
+.bub b{color:#E3C796}
+.ring{position:absolute;border-radius:12px;box-shadow:0 0 0 3px var(--amber),0 0 0 9999px rgba(27,28,29,.18);animation:ring 1.6s ease-in-out infinite;pointer-events:none!important}
+@keyframes ring{0%,100%{box-shadow:0 0 0 3px var(--amber),0 0 0 9999px rgba(27,28,29,.16)}50%{box-shadow:0 0 0 6px var(--amber),0 0 0 9999px rgba(27,28,29,.16)}}
+.tap{position:absolute;background:var(--amber);color:#fff;font-size:13px;font-weight:800;border-radius:99px;padding:6px 12px;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.25);pointer-events:none!important;display:flex;align-items:center;gap:6px}
+.tap::after{content:"";position:absolute;left:18px;bottom:-6px;border:6px solid transparent;border-bottom:0;border-top-color:var(--amber)}
+
+/* panel del recorrido */
+.tour{position:fixed;right:18px;bottom:18px;z-index:85;width:390px;max-height:calc(100vh - 100px);display:flex;flex-direction:column;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(16,24,40,.28);overflow:hidden}
+.tour .hd{display:flex;align-items:center;gap:10px;padding:14px 16px 10px}
+.tour .hd .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--brown)}
+.tour .hd .n{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--faint)}
+.tour .hd button{border:0;background:var(--wash);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.tour .prog{height:4px;background:#EEF0EF;margin:0 16px;border-radius:99px;overflow:hidden}
+.tour .prog i{display:block;height:100%;background:var(--green);border-radius:99px;transition:width .3s}
+.tour .bd{padding:14px 16px 6px;overflow:auto}
+.tour h2{margin:0;font-size:21px;letter-spacing:-.02em;color:var(--green-title);line-height:1.2}
+.tour .tx{margin:8px 0 0;font-size:15px;line-height:1.5;color:#30353a}
+.tour .pts{display:grid;gap:6px;margin:14px 0 4px;padding:0;list-style:none}
+.tour .pts button{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid transparent;background:var(--wash);border-radius:12px;padding:9px 11px;font-size:14px;line-height:1.42;color:#30353a}
+.tour .pts button .n{width:22px;height:22px;flex:0 0 auto;border-radius:50%;background:var(--amber);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.tour .pts button.on{border-color:var(--green-soft);background:#fff}
+.tour .pts button.on .n{background:var(--green)}
+.tour .hint{font-size:12.5px;color:var(--faint);margin:6px 0 0}
+.tour .act{margin:12px 0 4px;display:flex;gap:10px;align-items:center;background:var(--cream);color:var(--amber-deep);border-radius:12px;padding:11px 13px;font-size:14.5px;font-weight:700;line-height:1.4}
+.tour .act svg{width:20px;height:20px;flex:0 0 auto}
+.tour .ft{display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid #EEF0EF}
+.tour .ft button{border:0;border-radius:12px;padding:11px 16px;font-weight:700;font-size:14.5px}
+.tour .ft .prev{background:#EEF0EF;color:var(--muted)}
+.tour .ft .next{margin-left:auto;background:var(--green);color:#fff;display:flex;align-items:center;gap:6px}
+.tour .ft .next svg{width:16px;height:16px}
+.tour .ft .free{background:var(--wash-2);color:var(--green-deep)}
+.tour.min .bd,.tour.min .ft,.tour.min .prog{display:none}
+@media (max-width:760px){
+  .tour{left:8px;right:8px;bottom:8px;width:auto;max-height:42vh;border-radius:18px}
+  .tour .pts{display:none}
+  .tour .bd{padding-top:10px}
+  .tour .ft{padding:10px 12px 12px}
+  .tour h2{font-size:18px}
+  .tour .tx{font-size:14px}
+}
+
+/* modo libre */
+.freebar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;gap:6px;align-items:center;background:#1B1C1D;color:#fff;border-radius:99px;padding:6px 6px 6px 16px;box-shadow:0 12px 32px rgba(0,0,0,.3);font-size:13.5px;font-weight:600;white-space:nowrap}
+.freebar button{border:0;border-radius:99px;padding:9px 14px;font-weight:700;font-size:13.5px;background:rgba(255,255,255,.12);color:#fff}
+.freebar button.p{background:var(--amber)}
+@media (max-width:560px){.freebar span{display:none}}
+
+/* capas */
+.toast{position:fixed;left:50%;top:76px;transform:translate(-50%,-10px);z-index:90;max-width:min(520px,calc(100vw - 32px));background:#1B1C1D;color:#fff;border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.45;box-shadow:0 12px 32px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;z-index:70;background:rgba(27,28,29,.4);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:28px 12px 220px}
+.modal .box{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(16,24,40,.3);margin:auto 0;position:relative}
+.modal .x{position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.95);box-shadow:0 1px 4px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center}
+.pop{position:fixed;z-index:80;background:#fff;border-radius:14px;box-shadow:0 12px 36px rgba(16,24,40,.22);padding:6px;min-width:230px}
+.pop .t{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:8px 10px 4px}
+.pop button{display:flex;width:100%;border:0;background:none;text-align:left;padding:10px;border-radius:9px;font-size:14.5px;justify-content:space-between;gap:10px}
+.pop button:hover{background:var(--wash)}
+.pop button small{color:var(--faint);font-size:11.5px;font-weight:600}
+.sheet{position:fixed;inset:0;z-index:75;background:rgba(27,28,29,.38);display:flex;align-items:flex-end;justify-content:center}
+.sheet .in{background:#fff;width:min(460px,100%);max-height:80vh;overflow:auto;border-radius:20px 20px 0 0;padding:10px 12px 28px}
+.sheet .grab{width:40px;height:5px;border-radius:3px;background:#DEDBD3;margin:4px auto 8px}
+.welcome{position:fixed;inset:0;z-index:95;background:rgba(27,28,29,.55);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.welcome .card{background:#fff;border-radius:24px;max-width:560px;width:100%;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.welcome .lg{display:flex;align-items:center;gap:10px}
+.welcome .lg img{width:44px;height:44px;border-radius:50%}
+.welcome h1{margin:16px 0 0;font-size:28px;letter-spacing:-.025em;color:var(--green-title);line-height:1.1}
+.welcome p{color:var(--muted);line-height:1.55;margin:10px 0 0;font-size:15.5px}
+.doors{display:grid;gap:10px;margin-top:20px}
+.doors button{display:flex;gap:14px;align-items:center;text-align:left;border:1.5px solid #E3E6E4;background:#fff;border-radius:16px;padding:14px 16px;transition:border-color .2s,background .2s}
+.doors button:hover{border-color:var(--green-soft);background:var(--wash)}
+.doors .ic{width:46px;height:46px;flex:0 0 auto;border-radius:13px;background:var(--wash-2);color:var(--green-deep);display:flex;align-items:center;justify-content:center}
+.doors .ic svg{width:24px;height:24px}
+.doors b{display:block;font-size:16.5px}
+.doors small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.welcome .alt{margin-top:14px;border:0;background:none;color:var(--green);font-weight:700;font-size:14px;padding:6px 0}
+.welcome .note{font-size:13px;color:var(--faint);margin-top:12px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-desk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="i-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-min" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-tap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 10a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.4L4.3 15a2 2 0 0 1 3.4-2L9 15"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 4.5 4h15L21 9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M5 12v8h14v-8M10 20v-5h4v5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+</defs></svg>
+
+<header class="bar" id="bar">
+  <a class="logo" href="../index.html#vivelo" title="Volver a la presentación"><img src="img/logo.png" alt=""><b><i>My</i><span>Cajas</span></b></a>
+  <div class="seg" role="group" aria-label="Qué recorrido">
+    <button id="bAdmin" aria-pressed="true">Equipo de Cajas</button>
+    <button id="bPortal" aria-pressed="false">Portal del cliente</button>
+  </div>
+  <div class="seg" role="group" aria-label="Dispositivo">
+    <button id="bDesk" aria-pressed="true"><svg><use href="#i-desk"/></svg><span class="hide-sm">Escritorio</span></button>
+    <button id="bPhone" aria-pressed="false"><svg><use href="#i-phone"/></svg><span class="hide-sm">Teléfono</span></button>
+  </div>
+  <span class="sp"></span>
+  <a class="ghost hide-sm" href="../index.html#vivelo"><svg><use href="#i-back"/></svg>Presentación</a>
+</header>
+
+<div id="view"></div>
+
+<section class="tour" id="tour" hidden aria-live="polite">
+  <div class="hd"><span class="k" id="tK"></span><span class="n" id="tN"></span><button id="tMin" aria-label="Minimizar"><svg width="16" height="16"><use href="#i-min"/></svg></button></div>
+  <div class="prog"><i id="tP"></i></div>
+  <div class="bd">
+    <h2 id="tT"></h2>
+    <p class="tx" id="tX"></p>
+    <ul class="pts" id="tPts"></ul>
+    <p class="hint" id="tHint"></p>
+    <div class="act" id="tAct" hidden><svg><use href="#i-tap"/></svg><span id="tActT"></span></div>
+  </div>
+  <div class="ft">
+    <button class="prev" id="tPrev">Anterior</button>
+    <button class="free" id="tFree" hidden>Explorar libre</button>
+    <button class="next" id="tNext">Siguiente <svg><use href="#i-next"/></svg></button>
+  </div>
+</section>
+
+<div class="freebar" id="freebar" hidden><span>Modo libre: pícale a lo que quieras</span><button id="fbScreens">Pantallas</button><button class="p" id="fbTour">Volver al recorrido</button></div>
+
+<div class="toast" id="toast" role="status"><span id="toastT"></span></div>
+
+<div class="welcome" id="welcome" hidden>
+  <div class="card">
+    <div class="lg"><img src="img/logo.png" alt=""><b style="font-size:19px"><span style="color:var(--amber)">My</span><span style="color:var(--green-title)">Cajas</span></b></div>
+    <h1>Te damos un recorrido</h1>
+    <p>Te llevamos paso a paso por las pantallas. Pasa el mouse o toca los <b style="color:var(--amber-deep)">números</b> para ver qué es cada cosa, y cuando te lo pida, pícale a lo que está marcado para avanzar.</p>
+    <div class="doors">
+      <button id="wAdmin"><span class="ic"><svg><use href="#i-box"/></svg></span><span><b>Como equipo de Cajas</b><small>Balance, perfil del cliente, reportar movimientos y enviarlos a IFCO.</small></span></button>
+      <button id="wPortal"><span class="ic"><svg><use href="#i-store"/></svg></span><span><b>Como cliente</b><small>Su portal: sus números, sus facturas, su estado de cuenta y la tienda en línea.</small></span></button>
+    </div>
+    <button class="alt" id="wFree">Prefiero explorar por mi cuenta</button>
+    <p class="note">Son pantallas reales del diseño con datos de ejemplo. Nada se guarda ni se envía.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+const GEN = {"a_login": {"d": {"f": "c1_Login_0", "w": 1440, "h": 900}, "m": {"f": "c1_Login_2", "w": 360, "h": 720}}, "a_balance": {"d": {"f": "c1_BalanceConsolidado_0", "w": 1440, "h": 2280}, "m": {"f": "c1_BalanceConsolidado_2", "w": 360, "h": 2551}}, "a_balifco": {"d": {"f": "c1_BalanceIfco_0", "w": 1440, "h": 2280}, "m": {"f": "c1_BalanceIfco_2", "w": 360, "h": 2551}}, "a_mov": {"d": {"f": "c1_MovFinal_1", "w": 1440, "h": 1910}, "m": {"f": "c1_MovFinal_0", "w": 360, "h": 4898}}, "a_clientes": {"d": {"f": "c1_Clientes_0", "w": 1440, "h": 1780}, "m": {"f": "c1_Clientes_6", "w": 360, "h": 1349}}, "a_clientes_f": {"d": {"f": "c1_Clientes_1", "w": 1280, "h": 1780}, "m": {"f": "c1_Clientes_7", "w": 360, "h": 900}}, "a_perfil": {"d": {"f": "c1_Perfil_0", "w": 1440, "h": 1777}, "m": {"f": "c1_Perfil_4", "w": 360, "h": 1914}}, "a_perfil_mov": {"d": {"f": "c1_PerfilMov_0", "w": 1440, "h": 1963}, "m": {"f": "c1_PerfilMov_2", "w": 360, "h": 5007}}, "a_perfil_datos": {"d": {"f": "c1_Perfil_0", "w": 1440, "h": 1777}, "m": {"f": "c1_Perfil_5", "w": 360, "h": 1166}}, "a_almacenes": {"d": {"f": "c2_Almacenes_0", "w": 1440, "h": 1760}, "m": {"f": "c2_Almacenes_2", "w": 360, "h": 1281}}, "a_perfil_alm": {"d": {"f": "c2_PerfilAlmacen_0", "w": 1440, "h": 1777}, "m": {"f": "c2_PerfilAlmacen_3", "w": 360, "h": 1914}}, "a_perfil_alm_datos": {"d": {"f": "c2_PerfilAlmacen_0", "w": 1440, "h": 1777}, "m": {"f": "c2_PerfilAlmacen_4", "w": 360, "h": 1032}}, "a_modelos": {"d": {"f": "c1_Modelos_0", "w": 1440, "h": 1640}, "m": {"f": "c1_Modelos_8", "w": 360, "h": 1512}}, "a_modelo": {"d": {"f": "c1_Modelos_2", "w": 1440, "h": 1640}, "m": {"f": "c1_Modelos_9", "w": 360, "h": 1449}}, "a_analistas": {"d": {"f": "c1_Analistas_0", "w": 1440, "h": 900}, "m": {"f": "c1_Analistas_16", "w": 360, "h": 686}}, "a_destinos": {"d": {"f": "c1_Destinos_0", "w": 1440, "h": 1700}, "m": {"f": "c1_Destinos_11", "w": 360, "h": 1289}}, "a_edi": {"d": {"f": "c2_Edi2_0", "w": 1440, "h": 1960}, "m": {"f": "c2_Edi2_9", "w": 360, "h": 1106}}, "a_edi_crear": {"d": {"f": "c2_Edi2_1", "w": 1280, "h": 900}}, "a_edi_enviar": {"d": {"f": "c2_Edi2_3", "w": 1280, "h": 900}}, "a_edi_transito": {"d": {"f": "c2_Edi2_4", "w": 1280, "h": 1840}}, "a_edi_falla": {"d": {"f": "c2_Edi2_5", "w": 1280, "h": 1900}}, "a_edi_elim": {"d": {"f": "c2_Edi2_7", "w": 1280, "h": 900}, "m": {"f": "c2_Edi2_18", "w": 360, "h": 711}}, "a_manual": {"d": {"f": "c2_Manual2_0", "w": 1440, "h": 1120}, "m": {"f": "c2_Manual2_9", "w": 360, "h": 1500}}, "a_manual_rev": {"d": {"f": "c2_Manual2_2", "w": 1280, "h": 760}}, "a_csv": {"d": {"f": "c2_Csv2_0", "w": 1440, "h": 1000}, "m": {"f": "c2_Csv2_9", "w": 360, "h": 860}}, "a_csv_rev": {"d": {"f": "c2_Csv2_1", "w": 1280, "h": 1960}}, "a_carga": {"d": {"f": "c1_CargaBalance_0", "w": 1440, "h": 1500}, "m": {"f": "c1_CargaBalance_5", "w": 360, "h": 560}}, "m_nuevo_cliente": {"d": {"f": "c1_Clientes_2", "w": 520, "h": 1159}, "m": {"f": "c1_Clientes_8", "w": 360, "h": 900}}, "m_ver_mov": {"d": {"f": "c1_Detalle_2", "w": 796, "h": 812}}, "m_nuevo_destino": {"d": {"f": "c1_Destinos_3", "w": 480, "h": 763}, "m": {"f": "c1_Destinos_13", "w": 360, "h": 900}}, "m_nuevo_modelo": {"d": {"f": "c1_Modelos_4", "w": 520, "h": 710}}, "m_nuevo_analista": {"d": {"f": "c1_Analistas_2", "w": 480, "h": 357}, "m": {"f": "c1_Analistas_17", "w": 360, "h": 640}}, "m_edi_detalle": {"d": {"f": "c2_Edi2_19", "w": 860, "h": 1547}}, "m_csv_archivo": {"d": {"f": "c2_Csv2_3", "w": 600, "h": 312}}, "p_login": {"d": {"f": "c1_Login_0", "w": 1440, "h": 900}, "m": {"f": "c1_Login_2", "w": 360, "h": 720}}, "p_inicio": {"d": {"f": "c3_Inicio3_0", "w": 1440, "h": 976}, "m": {"f": "c3_Inicio3_1", "w": 360, "h": 1167}}, "p_inicio_bal": {"d": {"f": "c3_Inicio3_0", "w": 1440, "h": 976}, "m": {"f": "c3_Inicio3_2", "w": 360, "h": 1079}}, "p_mov": {"d": {"f": "c3_Movimientos_0", "w": 1440, "h": 1972}, "m": {"f": "c3_Movimientos_2", "w": 360, "h": 1361}}, "p_movs": {"d": {"f": "c3_Movimientos_1", "w": 1440, "h": 1106}, "m": {"f": "c3_Movimientos_3", "w": 360, "h": 1013}}, "p_reportar": {"d": {"f": "c3_Reportar_1", "w": 1440, "h": 1106}}, "p_reportar_mano": {"d": {"f": "c3_Reportar_2", "w": 1440, "h": 1106}}, "p_correccion": {"d": {"f": "c3_Reportar_3", "w": 1440, "h": 1106}, "m": {"f": "c3_Reportar_4", "w": 360, "h": 860}}, "p_fin": {"d": {"f": "c3_Finanzas_0", "w": 1440, "h": 1110}, "m": {"f": "c3_Finanzas_3", "w": 360, "h": 1221}}, "p_fact": {"d": {"f": "c3_Finanzas_1", "w": 1440, "h": 1010}, "m": {"f": "c3_Finanzas_4", "w": 360, "h": 905}}, "p_fact_abierta": {"d": {"f": "c3_Finanzas_5", "w": 1440, "h": 1010}}, "p_pagos": {"d": {"f": "c3_Finanzas_2", "w": 1440, "h": 662}}, "p_generar": {"d": {"f": "c3_Finanzas_6", "w": 1440, "h": 1110}}, "p_docs": {"d": {"f": "c3_Documentos_0", "w": 1440, "h": 1000}, "m": {"f": "c3_Documentos_3", "w": 360, "h": 837}}, "p_misdocs": {"d": {"f": "c3_Documentos_1", "w": 1440, "h": 1000}, "m": {"f": "c3_Documentos_4", "w": 360, "h": 959}}, "p_cat": {"d": {"f": "c3_Pedidos_0", "w": 1440, "h": 1151}, "m": {"f": "c3_Pedidos_5", "w": 360, "h": 853}}, "p_modelo": {"d": {"f": "c3_Pedidos_1", "w": 1440, "h": 1000}, "m": {"f": "c3_Pedidos_5", "w": 360, "h": 853}}, "p_pedido": {"d": {"f": "c3_Pedidos_2", "w": 1440, "h": 1151}, "m": {"f": "c3_Pedidos_6", "w": 360, "h": 1180}}, "p_gracias": {"d": {"f": "c3_Pedidos_3", "w": 1440, "h": 1000}}, "p_mispedidos": {"d": {"f": "c3_Pedidos_4", "w": 1440, "h": 1000}}, "p_notif": {"d": {"f": "c3_Notificaciones_0", "w": 1440, "h": 1000}, "m": {"f": "c3_Notificaciones_5", "w": 360, "h": 1197}}, "m_campana": {"d": {"f": "c3_Notificaciones_1", "w": 420, "h": 597}}, "m_edc1": {"d": {"f": "c3_EstadoCuenta_1", "w": 816, "h": 1056}}, "m_edc_correo": {"d": {"f": "c3_EstadoCuenta_0", "w": 680, "h": 955}}, "m_correo_cliente": {"d": {"f": "c3_Correos_0", "w": 680, "h": 1174}}, "m_correo_interno": {"d": {"f": "c3_Correos_1", "w": 680, "h": 1789}}, "m_correo_semaforo": {"d": {"f": "c3_Notificaciones_3", "w": 680, "h": 1130}}, "a_pedidos": {"d": {"f": "c3_PedidosMC_0", "w": 1440, "h": 1060}, "m": {"f": "c3_PedidosMC_3", "w": 360, "h": 810}}, "a_pedido_det": {"d": {"f": "c3_PedidosMC_1", "w": 1440, "h": 1260}, "m": {"f": "c3_PedidosMC_4", "w": 360, "h": 1218}}};
+const view=document.getElementById('view'), cache={};
+const realPhone = matchMedia('(max-width:640px)').matches;
+const st = {mode:'free', tour:'admin', step:0, dev: realPhone?'m':'d', cur:'a_login', last:{admin:'a_balance',portal:'p_inicio'}};
+let frameEl=null, ovEl=null, scrollEl=null, zEff=1;
+
+function norm(t){return (t||'').replace(/\s+/g,' ').trim()}
+async function frag(f){ if(!cache[f]){ const r=await fetch('f/'+f+'.html'); cache[f]=await r.text(); } return cache[f]; }
+function appOf(id){ return id.startsWith('p_')?'portal':'admin'; }
+function toast(msg){ const t=document.getElementById('toast'); document.getElementById('toastT').textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),3600); }
+const SOON='Esta sección se está diseñando. Llega en las siguientes entregas.';
+const POST='Esto llega después del primer release.';
+
+/* ================= RECORRIDOS ================= */
+const T = {
+ admin:{name:'Recorrido · Equipo de Cajas', steps:[
+  {s:'a_login',t:'Así entras a MyCajas',x:'Cada persona de Cajas entra con su cuenta de Google de Cajas. No hay usuarios nuevos que recordar, y cada quien ve lo que le corresponde.',
+   pts:[[{t:'Continuar con Google'},'Tu cuenta de Google de Cajas es tu acceso.']],
+   act:{q:{t:'Continuar con Google'},go:'a_balance',say:'Pícale a «Continuar con Google» para entrar.'}},
+  {s:'a_balance',t:'Balance consolidado',x:'La foto de toda la operación: cada cuenta con su balance, sus días y su semáforo, al día. Pasa el mouse o toca cada número.',
+   pts:[[{t:'N Balance'},'Todas las cajas en poder de las cuentas, incluyendo lo que todavía está en revisión con IFCO.'],
+        [{t:'DOH'},'<b>Días en mano</b>: cuántos días de cajas tienen las cuentas en su poder. Se mide como lo mide IFCO.'],
+        [{t:'DOS'},'<b>Días de suministro</b>: a qué ritmo se están regresando las cajas.'],
+        [{t:'Requieren atención'},'Las cuentas en alerta o críticas: las que conviene revisar primero.'],
+        [{ph:'Cliente o IFCO no.'},'Busca cualquier cuenta por nombre o número IFCO.'],
+        [{t:'Sano'},'El semáforo: un clic y ves sólo las sanas, normales, en alerta o críticas.'],
+        [{t:'Columnas'},'Elige qué columnas ver y exporta lo que estés viendo a Excel.']],
+   act:{q:{t:'Cliente A'},go:'a_perfil',say:'Pícale a «Cliente A» para abrir su perfil.'}},
+  {s:'a_perfil',t:'Perfil del cliente',x:'Todo de un cliente en un solo lugar: sus datos, su balance, sus días y su saldo por modelo.',
+   pts:[[{t:'Alerta'},'Su semáforo, para saber de un vistazo cómo va.'],
+        [{t:'Datos del cliente'},'Sus datos, su commodity y su analista asignado.'],
+        [{t:'Yellow'},'Su balance aprobado, lo que va en revisión y sus entradas y salidas de 90 días.'],
+        [{t:'DOH'},'Días en mano y de suministro, con su semáforo.'],
+        [{t:'Saldos por modelo'},'Su saldo por modelo de caja: el nuestro (interno) y el de IFCO.'],
+        [{t:'Cuentas IFCO'},'Todas sus cuentas IFCO en un solo perfil.'],
+        [{t:'Cobranza'},'Lo que viene: su cobranza, tickets y estados de cuenta aquí mismo.']],
+   act:{q:{t:'Movimientos',role:'tab'},go:'a_perfil_mov',say:'Pícale a la pestaña «Movimientos».'}},
+  {s:'a_perfil_mov',t:'Sus movimientos',x:'Cada entrada y salida del cliente, con su estatus ante IFCO. Se busca y se filtra como en Excel.',
+   pts:[[{t:'Entradas'},'Entradas, salidas y flujo neto del periodo.'],
+        [{ph:'Delivery note o IFCO no.'},'Busca por delivery note o número IFCO.'],
+        [{t:'Más filtros'},'Filtra por estatus, número IFCO, modelo, fechas y más.'],
+        [{t:'En tránsito',role:'tab'},'Todos, aprobados, en tránsito o en disputa.'],
+        [{t:'yellow'},'El estatus que da IFCO: amarillo en revisión, verde aprobado, rojo rechazado.'],
+        [{t:'Exportar a Excel'},'Llévate lo filtrado a Excel.']],
+   act:{q:{t:'412300871'},modal:'m_ver_mov',say:'Pícale a un movimiento para ver su detalle.'}},
+  {s:'a_perfil_mov',modal:'m_ver_mov',t:'El detalle de un movimiento',x:'Cada movimiento tiene su historia completa: cuenta y contraparte, fechas, cantidades, de dónde vino y su estatus. Desde aquí se puede corregir o cancelar, y todo queda registrado.',pts:[]},
+  {s:'a_perfil_mov',t:'Vamos al EDI',x:'El EDI es donde todo lo reportado se revisa y se envía a IFCO. Está en el menú de la izquierda, dentro de IFCO.',pts:[],
+   act:{q:{t:'IFCO',nav:true},go:'a_edi',say:'Pícale a «IFCO» en el menú.'},mAct:{q:{aria:'Abrir el menú'},go:'a_edi',say:'Pícale al botón del menú.'}},
+  {s:'a_edi',t:'EDI: lo que va a IFCO',x:'Todo lo que se reporta llega aquí, venga de donde venga, y desde aquí se envía a IFCO.',
+   pts:[[{t:'Crear movimiento'},'Aquí se reportan movimientos: a mano o con un Excel.'],
+        [{t:'Pendientes de envío'},'Lo que está listo para enviarse. En «En tránsito» queda lo que ya se envió.'],
+        [{t:'Tipo y fuente'},'De dónde vino cada movimiento: CONTPAQi, el cliente, un Excel, el analista o un ajuste.'],
+        [{t:'Revisar'},'Lo que no cuadra (un número repetido, una cuenta que no existe) se marca antes de enviarlo.'],
+        [{t:'Seleccionar todos'},'Marca lo que vas a enviar.']],
+   act:{q:{t:'Crear movimiento'},go:'a_edi_crear',say:'Veamos cómo se reporta: pícale a «Crear movimiento».'}},
+  {s:'a_edi_crear',t:'Dos formas de reportar',x:'A mano, cuando son pocos, o subiendo un Excel cuando son muchos.',
+   pts:[[{t:'Captura manual'},'Para capturar a mano, hasta cinco a la vez.'],[{t:'Importar CSV'},'Para subir un Excel con muchos movimientos.']],
+   act:{q:{t:'Captura manual'},go:'a_manual',say:'Pícale a «Captura manual».'}},
+  {s:'a_manual',t:'Captura manual',x:'Un asistente sencillo: las cuentas se autocompletan y los avisos salen al momento.',
+   pts:[[{t:'Cuenta'},'Las cuentas se autocompletan del catálogo; lo que no existe se marca para el analista.'],
+        [{t:'Más campos'},'Campos extra sólo cuando hacen falta.'],
+        [{t:'Continuar'},'Antes de crear, MyCajas revisa todo.']],
+   act:{q:{t:'Continuar'},go:'a_manual_rev',say:'Pícale a «Continuar».'}},
+  {s:'a_manual_rev',t:'Se revisa antes de crear',x:'MyCajas revisa duplicados, cuentas y datos que faltan. Lo bueno se crea; lo que no cumple se explica.',
+   pts:[[{t:'No se puede enviar'},'Lo que no cumple se marca y se explica por qué.'],
+        [{t:'Revisar'},'Lo dudoso queda marcado para revisarlo.'],
+        [{t:'Crear 3 movimientos'},'Lo bueno se crea y queda listo en el EDI.']],
+   act:{q:{t:'Crear 3 movimientos'},go:'a_csv_rev',toast:'Listo, se crearon 3 movimientos. Ahora veamos la carga por Excel.',say:'Pícale a «Crear 3 movimientos».'}},
+  {s:'a_csv_rev',t:'Si son muchos: un Excel',x:'Así se ve cuando se sube un Excel con 48 movimientos. Lo nuevo se crea, lo repetido se ignora y lo que tiene error se explica, sin frenar la carga.',
+   pts:[[{t:'Con errores'},'Lo que tiene errores se marca y se explica.'],
+        [{t:'Ya cargados'},'Lo que ya estaba se ignora solo: se puede volver a subir el mismo Excel actualizado.'],
+        [{t:'Descargar errores'},'Descarga sólo lo que hay que corregir.'],
+        [{t:'Crear 40 movimientos'},'Lo bueno se crea de un jalón.']],
+   act:{q:{t:'Crear 40 movimientos'},go:'a_edi',toast:'Se crearon 40 movimientos y ya están en el EDI.',say:'Pícale a «Crear 40 movimientos».'}},
+  {s:'a_edi',t:'Enviar a IFCO',x:'Ya hay tres movimientos marcados. Ahora se envían a IFCO.',pts:[[{t:'Seleccionar todos'},'Los marcados son los que se van a enviar.']],
+   act:{q:{t:'Enviar a IFCO'},go:'a_edi_enviar',say:'Pícale a «Enviar a IFCO».'}},
+  {s:'a_edi_enviar',t:'Un último vistazo',x:'Antes de enviar, MyCajas te dice exactamente qué va: cuenta, contraparte, modelo y cantidad. Nada se envía sin confirmar.',
+   pts:[[{t:'Regresar'},'Si algo no está bien, regresas y lo corriges.']],
+   act:{q:{t:'Enviar a IFCO'},go:'a_edi_transito',toast:'Enviados a IFCO. Ahora esperan su confirmación.',say:'Pícale a «Enviar a IFCO» para confirmar.'}},
+  {s:'a_edi_transito',t:'En tránsito',x:'Lo enviado espera aquí a que IFCO lo confirme. Cuando IFCO responde, MyCajas compara movimiento por movimiento: lo que coincide se aprueba y cuenta en el balance; lo que no, pasa a conciliación para corregirse.',
+   pts:[[{t:'yellow'},'En revisión con IFCO: ya se ve, pero todavía no cuenta en el balance confirmado.'],
+        [{t:'En tránsito',role:'tab'},'Si IFCO no confirma en 48 horas, se avisa y pasa a conciliación.']]},
+  {s:'a_pedidos',t:'Los pedidos de los clientes',x:'Cuando un cliente pide cajas en su portal, el pedido llega aquí con sus métricas y su crédito, para aprobarlo o rechazarlo. El cliente ve la respuesta en su portal.',
+   pts:[[{t:'Por aprobar'},'Los pedidos que esperan respuesta.'],[{t:'Aprobar'},'Se aprueba o se rechaza ahí mismo; si se rechaza, el motivo le llega al vendedor.'],[{t:'Cómo lo recibe'},'Si pasa por las cajas o se las envían, y cómo paga.']]},
+  {s:'a_clientes',t:'Clientes',x:'El directorio de clientes, rápido de buscar y de filtrar.',
+   pts:[[{ph:'Nombre, código o IFCO no.'},'Busca a cualquier cliente.'],[{t:'Commodity'},'Filtra por lo que siembran: fresa, aguacate, tomate…'],[{t:'Nuevo cliente'},'Da de alta un cliente.'],[{t:'Alerta'},'Su semáforo, a la vista.']]},
+  {s:'a_perfil',dev:'m',t:'Y en tu teléfono',x:'Todo esto también está diseñado para el celular. Arriba puedes cambiar entre Escritorio y Teléfono cuando quieras.',
+   pts:[[{aria:'Abrir el menú'},'Aquí se abre el menú para moverte entre secciones.'],[{aria:'Notificaciones'},'Tus avisos.'],[{t:'Alerta'},'El semáforo del cliente, igual que en la compu.']]},
+  {s:'a_balance',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal. Sigue picándole a lo que quieras para descubrir más: almacenes, modelos, analistas, Balance IFCO… O haz el recorrido del portal del cliente.',pts:[]}
+ ]},
+ portal:{name:'Recorrido · Portal del cliente', steps:[
+  {s:'p_login',t:'Así entra el cliente',x:'Cada cliente recibe una invitación y entra con Google, Microsoft o su correo.',pts:[[{t:'Continuar con Google'},'Puede entrar con su cuenta de Google o Microsoft, o con su correo.']],
+   act:{q:{t:'Entrar'},go:'p_inicio',say:'Pícale a «Entrar».'}},
+  {s:'p_inicio',t:'El inicio del cliente',x:'Lo primero que ve: sus números y lo que le toca hoy.',
+   pts:[[{t:'Balance'},'Cuántas cajas tiene en su poder.'],[{t:'Días desde la última salida'},'Le recuerda reportar sus salidas a tiempo.'],[{t:'Lo que te toca'},'Lo que tiene pendiente: reportar, pagar, recoger su pedido.'],[{t:'Lo más reciente'},'Sus últimos avisos: movimientos aprobados, en conciliación, su estado de cuenta.'],[{t:'Balance por modelo'},'Su saldo por modelo de caja.']],
+   act:{q:{t:'Movimientos',nav:true},go:'p_mov',say:'Pícale a «Movimientos» en el menú.'},mAct:{q:{t:'Balance',role:'tab'},go:'p_mov',say:'Pícale a la pestaña «Balance».'}},
+  {s:'p_mov',t:'Sus cajas y sus días',x:'Su balance, sus días y consejos claros para mejorar sus números.',
+   pts:[[{t:'Días en mano'},'Sus días, con el mismo criterio de IFCO y su semáforo.'],[{t:'Para mejorar tus días'},'Consejos sencillos para mejorar sus números.'],[{t:'Saldos por modelo'},'Su saldo por modelo de caja.'],[{t:'Reportar movimientos'},'Reporta sus entradas y salidas él mismo.']],
+   act:{q:{t:'Movimientos',role:'tab'},go:'p_movs',say:'Pícale a la pestaña «Movimientos».'}},
+  {s:'p_movs',t:'Sus movimientos',x:'Cada movimiento con su estatus. Si algo está mal, pide una corrección desde el mismo movimiento.',
+   pts:[[{t:'En tránsito'},'Ve qué está aprobado, qué va en tránsito y qué está en conciliación.'],[{t:'yellow'},'El estatus de cada movimiento.'],[{t:'Solicitar corrección'},'Si algo está mal, pide una corrección aquí.']],
+   act:{q:{t:'Solicitar corrección'},go:'p_correccion',say:'Pícale a «Solicitar corrección».'}},
+  {s:'p_correccion',t:'Pedir una corrección',x:'Explica qué está mal y su analista lo revisa. Todo queda registrado.',pts:[],
+   act:{q:{t:'Finanzas',nav:true},go:'p_fin',say:'Ahora pícale a «Finanzas» en el menú.'}},
+  {s:'p_fin',t:'Sus finanzas',x:'Su línea de crédito, lo que debe, lo vencido y lo que vence pronto.',
+   pts:[[{t:'Saldo pendiente'},'Lo que debe, lo vencido y lo que vence esta semana.'],[{t:'Línea de crédito'},'Cuánto ha usado y cuánto le queda.'],[{t:'Avisos de cobranza'},'Recordatorios para estar al corriente.'],[{t:'Generar estado de cuenta'},'Genera su estado de cuenta cuando quiera.']],
+   act:{q:{t:'Facturas',role:'tab'},go:'p_fact',say:'Pícale a la pestaña «Facturas».'}},
+  {s:'p_fact',t:'Sus facturas',x:'Todas sus facturas: pendientes, vencidas y pagadas.',
+   pts:[[{t:'Vencidas'},'Filtra sus facturas por estatus.'],[{t:'Vencido'},'El estatus de cada factura.']],
+   act:{q:{t:'C 20437'},go:'p_fact_abierta',say:'Pícale a la factura «C 20437».'}},
+  {s:'p_fact_abierta',t:'La factura, a la mano',x:'Se abre aquí mismo y se descarga en PDF y XML.',pts:[],
+   act:{q:{t:'Documentos',nav:true},go:'p_docs',say:'Pícale a «Documentos» en el menú.'}},
+  {s:'p_docs',t:'Estados de cuenta y documentos',x:'Sus estados de cuenta de cada mes y sus documentos, para estar siempre en regla.',
+   pts:[[{t:'Mis documentos'},'Sus documentos y los de Cajas, siempre al día.']],
+   act:{q:{t:'Octubre 2026'},modal:'m_edc1',say:'Pícale al estado de cuenta de octubre.'}},
+  {s:'p_docs',modal:'m_edc1',t:'Su estado de cuenta',x:'Su cuenta con Cajas y sus cajas en un PDF con el diseño de Cajas: lo facturado, lo pagado, su línea de crédito, su balance y sus días.',pts:[]},
+  {s:'p_cat',t:'La tienda en línea',x:'El cliente pide sus cajas en línea, viendo su balance de cada modelo.',
+   pts:[[{t:'RPC IFCO'},'Por ahora, cajas IFCO; después, cartón y tarimas.'],[{t:'Tu balance'},'Ve su balance del modelo al pedir.']],
+   act:{q:{t:'Pedir'},go:'p_modelo',say:'Pícale a «Pedir».'}},
+  {s:'p_modelo',t:'Elige cuántas',x:'Ve las especificaciones del modelo y elige la cantidad.',pts:[[{t:'Cantidad'},'Cuántas cajas necesita.']],
+   act:{q:{t:'Poner pedido'},go:'p_pedido',say:'Pícale a «Poner pedido».'}},
+  {s:'p_pedido',t:'Su orden de compra',x:'Sube su orden de compra y elige si pasa por las cajas o se las envían.',pts:[],
+   act:{q:{t:'Poner pedido'},go:'p_gracias',say:'Pícale a «Poner pedido» para confirmar.'}},
+  {s:'p_gracias',t:'¡Gracias por tu pedido!',x:'En ese momento le llega un correo al cliente, y otro a control de activos, almacén, cobranza y su vendedor, con lo necesario para darle seguimiento.',
+   pts:[[{t:'PED-0042'},'Su número de pedido para darle seguimiento.']]},
+  {s:'p_gracias',modal:'m_correo_interno',t:'El aviso a las áreas',x:'Un solo correo para control de activos, almacén, cobranza y el vendedor, con las métricas del cliente, su cobranza y el almacén más cercano.',pts:[]},
+  {s:'a_pedidos',t:'Del lado de Cajas',x:'El pedido llega a MyCajas y se aprueba o se rechaza. El cliente ve la respuesta en su portal.',pts:[[{t:'Aprobar'},'Aprobar o rechazar ahí mismo.']]},
+  {s:'p_inicio',dev:'m',t:'En el teléfono del cliente',x:'El portal también está pensado para el celular. Arriba puedes cambiar entre Escritorio y Teléfono cuando quieras.',
+   pts:[[{aria:'Abrir el menú'},'El menú para moverse entre secciones.'],[{t:'Reportar salidas'},'Lo que le toca, a un toque.']]},
+  {s:'p_inicio',dev:'d',end:true,t:'¡Listo! Ahora explora tú',x:'Ya conoces lo principal del portal. Sigue picándole para descubrir más: pagos, mis pedidos, notificaciones… O haz el recorrido del equipo de Cajas.',pts:[]}
+ ]}
+};
+
+/* ================= PINTAR ================= */
+async function render(){
+  document.body.classList.toggle('real-phone', realPhone && st.dev==='m');
+  setSeg();
+  const sid=st.cur; const sp=GEN[sid]; if(!sp){ toast('Esa pantalla no está en el demo.'); return; }
+  const want = st.dev==='m' ? (sp.m||sp.d) : (sp.d||sp.m);
+  const html = await frag(want.f);
+  view.innerHTML='';
+  if(st.dev==='m'){
+    const w=document.createElement('div'); w.className='phone-wrap';
+    w.innerHTML=`<div class="iphone"><div class="screen"><div class="island"></div><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="scr"><div id="frame"></div><div id="ov"></div></div><div class="home"></div></div></div>`;
+    view.appendChild(w);
+    const ph=w.querySelector('.iphone'); zEff=1;
+    if(!realPhone){ zEff=Math.min(1,(view.clientHeight-40)/868); ph.style.zoom=zEff; }
+    frameEl=w.querySelector('#frame'); frameEl.innerHTML=html; scrollEl=realPhone?view:w.querySelector('.scr'); ovEl=w.querySelector('#ov');
+    const scrW = realPhone? view.clientWidth : 390;
+    frameEl.style.zoom = scrW/want.w;
+    if(!sp.m) toast('Esta pantalla sólo está diseñada para escritorio.');
+  } else {
+    const w=document.createElement('div'); w.className='desk';
+    const reserve = (st.mode==='tour' && view.clientWidth>=1100) ? 420 : 0;
+    const avail = view.clientWidth - 40 - reserve;
+    const z = Math.min(1, avail/want.w);
+    if(reserve){ w.style.paddingRight=(reserve+20)+'px'; w.style.justifyContent='flex-start'; }
+    w.innerHTML=`<div class="canvas"><div id="frame"></div><div id="ov"></div></div>`;
+    view.appendChild(w);
+    frameEl=w.querySelector('#frame'); frameEl.innerHTML=html; frameEl.style.zoom=z; scrollEl=view; ovEl=w.querySelector('#ov'); zEff=1;
+  }
+  const inner=frameEl.firstElementChild; if(inner){ inner.style.boxShadow='none'; if(st.dev==='m'){inner.style.borderRadius='0';} }
+  frameEl.querySelectorAll('a[href]').forEach(a=>a.setAttribute('href','#'));
+  view.scrollTo(0,0); if(scrollEl!==view) scrollEl.scrollTo(0,0);
+  frameEl.classList.add('fading'); requestAnimationFrame(()=>requestAnimationFrame(()=>frameEl.classList.remove('fading')));
+  frameEl.addEventListener('click',onClick); frameEl.addEventListener('input',onInput);
+  st.last[appOf(sid)]=sid;
+  if(st.mode==='tour') setTimeout(paintTour,60);
+}
+function setSeg(){
+  bAdmin.setAttribute('aria-pressed',appOf(st.cur)==='admin'); bPortal.setAttribute('aria-pressed',appOf(st.cur)==='portal');
+  bDesk.setAttribute('aria-pressed',st.dev==='d'); bPhone.setAttribute('aria-pressed',st.dev==='m');
+  document.documentElement.style.setProperty('--barh',document.getElementById('bar').offsetHeight+'px');
+  try{ const h = st.mode==='tour' ? 'tour-'+st.tour+'-'+(st.step+1) : st.cur.replace(/_/g,'-'); history.replaceState(null,'','#'+h+(st.dev==='m'?'-tel':'')); }catch(e){}
+}
+
+/* ================= BUSCAR ELEMENTOS ================= */
+function visible(e){ const r=e.getBoundingClientRect(); return r.width>0 && r.height>0 && !e.closest('[role=tooltip]'); }
+function findEl(q, root){
+  root=root||frameEl; if(!root) return null;
+  let pool=[...root.querySelectorAll('*')];
+  pool = q.nav ? pool.filter(e=>e.closest('nav')) : pool.filter(e=>!e.closest('nav'));
+  if(q.aria) pool=pool.filter(e=>(e.getAttribute('aria-label')||'').toLowerCase().startsWith(q.aria.toLowerCase()));
+  else if(q.ph) pool=pool.filter(e=>e.getAttribute('placeholder')===q.ph);
+  else {
+    let ex=pool.filter(e=>norm(e.textContent)===q.t);
+    if(!ex.length) ex=pool.filter(e=>{const x=norm(e.textContent); return x.endsWith(q.t) && x.length<=q.t.length+2;});
+    if(!ex.length) ex=pool.filter(e=>{const x=norm(e.textContent); return x.startsWith(q.t) && x.length<=q.t.length+16;});
+    pool=ex.filter(e=>![...e.children].some(c=>ex.includes(c)));
+  }
+  if(q.role) pool=pool.map(e=>e.getAttribute('role')===q.role?e:e.closest('[role='+q.role+']')).filter(Boolean);
+  pool=pool.filter(visible);
+  const dlg=[...root.querySelectorAll('[role=dialog]')].filter(visible)[0];
+  if(dlg){ const inD=pool.filter(e=>dlg.contains(e)); if(inD.length) pool=inD; }
+  if(q.act){ const it=pool.map(e=>e.closest('button,a,[role=tab],label')||e); const pref=it.filter(e=>/^(BUTTON|A)$/.test(e.tagName)||e.getAttribute('role')==='tab'); pool=pref.length?pref:it; }
+  return pool[q.i||0]||null;
+}
+function posOf(el){
+  const r=el.getBoundingClientRect(), c=ovEl.getBoundingClientRect();
+  return {x:(r.left-c.left)/zEff, y:(r.top-c.top)/zEff, w:r.width/zEff, h:r.height/zEff};
+}
+
+/* ================= RECORRIDO ================= */
+const tour=document.getElementById('tour');
+let curPts=[], actEl=null, modalEl=null;
+function stepObj(){ return T[st.tour].steps[st.step]; }
+function startTour(which, i){
+  st.mode='tour'; st.tour=which; st.step=i||0;
+  document.body.classList.add('tour-on'); tour.hidden=false; tour.classList.remove('min'); document.getElementById('freebar').hidden=true;
+  enterStep();
+}
+function enterStep(){
+  closeOverlays(); const s=stepObj();
+  if(s.dev && !(realPhone && s.dev==='d')) st.dev=s.dev;
+  st.cur=s.s; render();
+}
+function paintTour(){
+  const s=stepObj(), tt=T[st.tour], n=tt.steps.length;
+  document.getElementById('tK').textContent=tt.name;
+  document.getElementById('tN').textContent=`Paso ${st.step+1} de ${n}`;
+  document.getElementById('tP').style.width=((st.step+1)/n*100)+'%';
+  document.getElementById('tT').textContent=s.t;
+  document.getElementById('tX').innerHTML=s.x;
+  ovEl.innerHTML='';
+  curPts=[];
+  const ul=document.getElementById('tPts'); ul.innerHTML='';
+  const root = frameEl;
+  let k=0;
+  (s.pts||[]).forEach(([q,txt])=>{
+    const el=findEl(q,root);
+    k++; const num=k;
+    const li=document.createElement('li'); li.innerHTML=`<button data-k="${num}"><span class="n">${num}</span><span>${txt}</span></button>`; ul.appendChild(li);
+    let mk=null;
+    if(el){ const p=posOf(el); mk=document.createElement('button'); mk.className='mk'; mk.textContent=num; mk.style.left=(p.x)+'px'; mk.style.top=(p.y)+'px'; mk.setAttribute('aria-label','Punto '+num); ovEl.appendChild(mk);
+      mk.addEventListener('mouseenter',()=>pick(num,false)); mk.addEventListener('click',e=>{e.stopPropagation();pick(num,false)}); }
+    curPts.push({num,el,mk,txt});
+    li.firstElementChild.addEventListener('mouseenter',()=>pick(num,true));
+    li.firstElementChild.addEventListener('click',()=>pick(num,true));
+  });
+  document.getElementById('tHint').textContent = curPts.length ? (innerWidth<=760 ? 'Toca los números naranjas en la pantalla para ver qué es cada cosa.' : (matchMedia('(hover:hover)').matches?'Pasa el mouse sobre los números para ver qué es cada cosa.':'Toca los números para ver qué es cada cosa.')) : '';
+  // acción
+  const a = (st.dev==='m' && s.mAct) ? s.mAct : s.act;
+  actEl=null;
+  const actBox=document.getElementById('tAct');
+  if(a){
+    actEl=findEl(Object.assign({act:true},a.q),root);
+    if(!actEl && st.dev==='m' && s.act && s.mAct!==a){ actEl=null; }
+    actBox.hidden=false; document.getElementById('tActT').textContent = actEl ? a.say : 'Pícale a «Siguiente» para continuar.';
+    if(actEl){ const p=posOf(actEl); const ring=document.createElement('div'); ring.className='ring'; ring.style.left=(p.x-6)+'px'; ring.style.top=(p.y-6)+'px'; ring.style.width=(p.w+12)+'px'; ring.style.height=(p.h+12)+'px'; ovEl.appendChild(ring);
+      const tap=document.createElement('div'); tap.className='tap'; tap.innerHTML='Pícale aquí'; tap.style.left=Math.max(4,p.x-4)+'px'; tap.style.top=Math.max(4,p.y-46)+'px'; ovEl.appendChild(tap); }
+  } else actBox.hidden=true;
+  // modal del paso
+  if(s.modal) openModal(s.modal,true);
+  // botones
+  document.getElementById('tPrev').disabled = st.step===0; document.getElementById('tPrev').style.visibility = st.step===0?'hidden':'visible';
+  const nx=document.getElementById('tNext');
+  if(s.end){ nx.innerHTML = (st.tour==='admin'?'Recorrido del portal':'Recorrido del equipo')+' <svg><use href="#i-next"/></svg>'; document.getElementById('tFree').hidden=false; }
+  else { nx.innerHTML='Siguiente <svg><use href="#i-next"/></svg>'; document.getElementById('tFree').hidden=true; }
+  // llevar a la vista lo primero
+  const first = ((actEl && !curPts.length) || (actEl && innerWidth<=760)) ? actEl : (curPts.find(p=>p.el)||{}).el || actEl;
+  if(first) scrollToEl(first, 'start');
+}
+function scrollToEl(el){
+  const c=scrollEl; if(!c||!el) return;
+  const r=el.getBoundingClientRect(), cr=(c===view?view:c).getBoundingClientRect();
+  const off = innerWidth<=760 ? 70 : 120;
+  const y=(r.top-cr.top)/(c===view?1:zEff)+c.scrollTop-off;
+  const lim = innerWidth<=760 ? 0.35 : 0.55;
+  if(y>c.scrollTop+ (c.clientHeight*lim) || y<c.scrollTop) c.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+}
+let bubEl=null;
+function pick(num, fromList){
+  curPts.forEach(p=>{ if(p.mk) p.mk.classList.toggle('on',p.num===num); });
+  document.querySelectorAll('#tPts button').forEach(b=>b.classList.toggle('on',+b.dataset.k===num));
+  if(bubEl){bubEl.remove();bubEl=null;}
+  const p=curPts.find(x=>x.num===num); if(!p||!p.mk) return;
+  bubEl=document.createElement('div'); bubEl.className='bub'; bubEl.innerHTML=p.txt; ovEl.appendChild(bubEl);
+  const x=parseFloat(p.mk.style.left), y=parseFloat(p.mk.style.top);
+  const ovW = (ovEl.parentElement.clientWidth||800);
+  const bw=bubEl.offsetWidth;
+  bubEl.style.left = Math.max(6, Math.min(x+20, ovW-bw-10))+'px';
+  bubEl.style.top = (y+20)+'px';
+  if(fromList) scrollToEl(p.mk);
+}
+function doAction(){
+  const s=stepObj(); const a=(st.dev==='m'&&s.mAct)?s.mAct:s.act;
+  if(!a){ next(); return; }
+  if(a.toast) toast(a.toast);
+  if(a.modal){ st.step++; enterStep(); return; }
+  st.step++; enterStep();
+}
+function next(){
+  const s=stepObj();
+  if(s.end){ startTour(st.tour==='admin'?'portal':'admin',0); return; }
+  if(st.step < T[st.tour].steps.length-1){
+    const a=(st.dev==='m'&&s.mAct)?s.mAct:s.act;
+    if(a && a.toast) toast(a.toast);
+    st.step++; enterStep();
+  }
+}
+function prev(){ if(st.step>0){ st.step--; enterStep(); } }
+document.getElementById('tNext').onclick=next;
+document.getElementById('tPrev').onclick=prev;
+document.getElementById('tFree').onclick=()=>goFree();
+document.getElementById('tMin').onclick=()=>tour.classList.toggle('min');
+function goFree(){
+  st.mode='free'; tour.hidden=true; document.body.classList.remove('tour-on'); document.getElementById('freebar').hidden=false; closeOverlays();
+  if(ovEl) ovEl.innerHTML=''; setSeg();
+  toast('Modo libre: pícale a lo que quieras. Puedes volver al recorrido cuando quieras.');
+}
+document.getElementById('fbTour').onclick=()=>startTour(appOf(st.cur),0);
+document.getElementById('fbScreens').onclick=()=>screensSheet();
+
+/* ================= CLICS ================= */
+function onClick(e){
+  const t=e.target;
+  if(st.mode==='tour'){
+    e.preventDefault();
+    if(actEl && (actEl.contains(t)||t.contains(actEl))){ doAction(); return; }
+    // ¿cerca del objetivo?
+    if(actEl){ const r=actEl.getBoundingClientRect(); if(e.clientX>=r.left-6&&e.clientX<=r.right+6&&e.clientY>=r.top-6&&e.clientY<=r.bottom+6){ doAction(); return; } }
+    if(actEl){ toast('Sigue el recorrido: pícale a lo que está marcado, o usa «Siguiente».'); const ring=ovEl.querySelector('.ring'); if(ring){ring.style.animation='none';void ring.offsetWidth;ring.style.animation='';} }
+    else toast('Usa «Siguiente» para continuar el recorrido.');
+    return;
+  }
+  freeClick(e);
+}
+function onInput(e){
+  const inp=e.target; if(!inp.matches('input')) return;
+  const q=inp.value.trim().toLowerCase();
+  const rows=[...frameEl.querySelectorAll('tbody tr')];
+  rows.forEach(r=>{ r.style.display=(!q||r.textContent.toLowerCase().includes(q))?'':'none'; });
+}
+
+/* ================= MODO LIBRE ================= */
+const NAV = {
+ 'Inicio':'toast:El inicio del equipo llega después del primer release. Mientras, empiezas en el Balance consolidado.',
+ 'Movimientos':'a_mov','Pedidos':'a_pedidos','Balance Consolidado':'a_balance','Documentos':'toast:'+SOON,'Conciliaciones':'toast:La conciliación se está construyendo junto con el envío a IFCO.',
+ 'Balance IFCO':'a_balifco','Actualización Importación':'toast:'+SOON,'EDI':'a_edi','EDI Aprobación':'a_edi','Destinos autorizados':'a_destinos',
+ 'Clientes':'a_clientes','Almacenes':'a_almacenes','CHEP (post MVP)':'toast:'+POST,'Tickets (post MVP)':'toast:'+POST,'Integraciones':'toast:'+SOON,'Ayuda':'toast:Aquí vivirá la ayuda de MyCajas.','MyCajas':'a_balance'
+};
+const PNAV = {'Inicio':'p_inicio','Movimientos':'p_mov','Finanzas':'p_fin','Documentos':'p_docs','Pedidos':'p_cat','Notificaciones':'p_notif','Devoluciones':'toast:'+POST,'Tickets':'toast:'+POST,'Ayuda':'toast:Aquí vivirá la ayuda del portal.','MyCajas':'p_inicio'};
+const GROUPS = {
+ 'Operación':[['Movimientos','a_mov'],['Pedidos','a_pedidos'],['Balance consolidado','a_balance'],['Conciliaciones','toast:La conciliación se está construyendo junto con el envío a IFCO.','pronto']],
+ 'IFCO':[['Balance IFCO','a_balifco'],['EDI · enviar a IFCO','a_edi'],['Destinos autorizados','a_destinos']],
+ 'Catálogos':[['Modelos','a_modelos'],['Analistas','a_analistas']],
+ 'Administración':[['Carga de balance','a_carga']],
+ 'Finanzas':[['Cobranza y facturas','toast:'+POST,'después']],
+ 'Business Intelligence':[['Tableros','toast:'+POST,'después']]
+};
+const R = {
+ a_login:[[/continuar con|^entrar$/i,'a_balance']],
+ p_login:[[/continuar con|^entrar$/i,'p_inicio']],
+ a_clientes:[[/^nuevo cliente/i,'m_nuevo_cliente'],[/^commodity|^filtros$/i,'a_clientes_f']],
+ a_clientes_f:[[/^nuevo cliente/i,'m_nuevo_cliente'],[/fresa|aguacate|limpiar|ver resultados|aplicar/i,'a_clientes']],
+ a_perfil:[[/^movimientos$/i,'a_perfil_mov'],[/^datos$/i,'a_perfil_datos'],[/post mvp/i,'toast:'+POST],[/^conciliaci/i,'toast:La conciliación del cliente llega con el envío a IFCO.'],[/^clientes$/i,'a_clientes'],[/^editar$|nueva nota|^agregar$/i,'toast:Aquí se edita, se agregan notas y se asigna analista.']],
+ a_perfil_datos:[[/^resumen$/i,'a_perfil'],[/^movimientos$/i,'a_perfil_mov']],
+ a_perfil_mov:[[/^resumen$/i,'a_perfil'],[/post mvp/i,'toast:'+POST],[/^clientes$/i,'a_clientes'],[/crear movimiento/i,'a_edi_crear']],
+ a_perfil_alm:[[/^movimientos$/i,'a_perfil_mov'],[/^datos$/i,'a_perfil_alm_datos'],[/post mvp|inventario f/i,'toast:'+POST],[/^almacenes$/i,'a_almacenes']],
+ a_perfil_alm_datos:[[/^resumen$/i,'a_perfil_alm']],
+ a_modelos:[[/^nuevo modelo/i,'m_nuevo_modelo']],
+ a_modelo:[[/^modelos$/i,'a_modelos'],[/balance consolidado/i,'a_balance']],
+ a_analistas:[[/^nuevo analista/i,'m_nuevo_analista'],[/reasignar|editar|desactivar|eliminar/i,'toast:Así se reasignan clientes o se edita un analista.']],
+ a_destinos:[[/^nuevo destino/i,'m_nuevo_destino']],
+ a_mov:[[/crear movimiento/i,'a_edi_crear'],[/exportar/i,'toast:Se descarga un Excel con lo que tengas filtrado.']],
+ a_balance:[[/exportar/i,'toast:Se descarga un archivo con lo que tengas filtrado.']],
+ a_balifco:[[/exportar/i,'toast:Se descarga un archivo con lo que tengas filtrado.']],
+ a_edi:[[/^crear movimiento/i,'a_edi_crear'],[/^enviar a ifco/i,'a_edi_enviar'],[/^en tr[aá]nsito/i,'a_edi_transito'],[/^eliminados/i,'a_edi_elim'],[/^revisar$/i,'m_edi_detalle']],
+ a_edi_crear:[[/captura manual/i,'a_manual'],[/importar csv/i,'a_csv'],[/^pendientes/i,'a_edi'],[/^en tr[aá]nsito/i,'a_edi_transito']],
+ a_edi_enviar:[[/^regresar/i,'a_edi'],[/^enviar a ifco/i,()=>{ toast('Enviados a IFCO. Ahora esperan su confirmación.'); go('a_edi_transito'); }]],
+ a_edi_transito:[[/^pendientes/i,'a_edi'],[/^crear movimiento/i,'a_edi_crear']],
+ a_edi_elim:[[/^pendientes/i,'a_edi'],[/^en tr[aá]nsito/i,'a_edi_transito'],[/restaurar/i,'toast:Restaurado: regresa a Pendientes de envío.']],
+ a_manual:[[/^continuar/i,'a_manual_rev'],[/^cancelar/i,'a_edi'],[/^pendientes/i,'a_edi']],
+ a_manual_rev:[[/^regresar/i,'a_manual'],[/^crear \d+/i,()=>{ toast('Se crearon 3 movimientos. Ya están listos en el EDI.'); go('a_edi'); }]],
+ a_csv:[[/elegir archivo|^continuar/i,()=>{ toast('Leyendo el archivo… 48 movimientos encontrados.'); go('a_csv_rev'); }],[/^cancelar/i,'a_edi']],
+ a_csv_rev:[[/^crear \d+/i,()=>{ toast('Se crearon 40 movimientos.'); go('a_edi'); }],[/cambiar archivo/i,'a_csv'],[/descargar errores/i,'toast:Se descarga un Excel sólo con los errores.']],
+ a_carga:[[/previsualizar|reiniciar|cambiar archivo|recuperar/i,'toast:Aquí se carga el balance de IFCO; en el demo no se carga nada.']],
+ a_pedidos:[[/^aprobar$/i,'toast:Pedido aprobado. El cliente lo ve en su portal.'],[/^rechazar$/i,'toast:Al rechazar se pide el motivo, que le llega al vendedor.'],[/^PED-/,'a_pedido_det']],
+ a_pedido_det:[[/^pedidos$/i,'a_pedidos'],[/^aprobar$/i,()=>{toast('Pedido aprobado.');go('a_pedidos');}]],
+ p_inicio:[[/reportar salidas/i,'p_reportar'],[/ver facturas/i,'p_fact'],[/ver pedido/i,'p_mispedidos'],[/ver todos los avisos/i,'p_notif'],[/^balance$/i,'p_inicio_bal']],
+ p_inicio_bal:[[/^reciente$/i,'p_inicio']],
+ p_mov:[[/^movimientos$/i,'p_movs'],[/reportar movimientos/i,'p_reportar'],[/exportar/i,'toast:Se descarga un Excel con sus movimientos.']],
+ p_movs:[[/^resumen$/i,'p_mov'],[/solicitar corrección/i,'p_correccion'],[/solicitar refacturación/i,'toast:'+POST],[/reportar movimientos/i,'p_reportar']],
+ p_reportar:[[/a mano|capturar/i,'p_reportar_mano'],[/^resumen$/i,'p_mov'],[/^movimientos$/i,'p_movs']],
+ p_reportar_mano:[[/^continuar|^crear/i,()=>{toast('Movimientos reportados. Su analista los envía a IFCO.');go('p_movs');}],[/^cancelar/i,'p_movs']],
+ p_correccion:[[/enviar|solicitar/i,()=>{ toast('Solicitud enviada a su analista.'); go('p_movs'); }],[/cancelar/i,'p_movs']],
+ p_fin:[[/^facturas$/i,'p_fact'],[/^pagos$/i,'p_pagos'],[/generar estado de cuenta/i,'p_generar'],[/ver todas las facturas/i,'p_fact']],
+ p_fact:[[/^resumen$/i,'p_fin'],[/^pagos$/i,'p_pagos'],[/^C \d+/,'p_fact_abierta'],[/generar estado de cuenta/i,'p_generar']],
+ p_fact_abierta:[[/cerrar|^facturas$/i,'p_fact'],[/descargar/i,'toast:Se descarga la factura en PDF o XML.']],
+ p_pagos:[[/^resumen$/i,'p_fin'],[/^facturas$/i,'p_fact']],
+ p_generar:[[/^generar$|^cancelar/i,()=>{toast('Se genera su estado de cuenta en PDF y le llega por correo.');go('p_docs');}]],
+ p_docs:[[/mis documentos/i,'p_misdocs'],[/generado|2026$/i,'m_edc1'],[/generar estado de cuenta/i,'p_generar']],
+ p_misdocs:[[/estados de cuenta/i,'p_docs'],[/actualizar|subir/i,'toast:Sube o actualiza su documento para estar en regla.']],
+ p_cat:[[/^pedir$/i,'p_modelo'],[/mis pedidos/i,'p_mispedidos']],
+ p_modelo:[[/poner pedido/i,'p_pedido']],
+ p_pedido:[[/poner pedido/i,'p_gracias'],[/cancelar|regresar/i,'p_cat']],
+ p_gracias:[[/seguir pidiendo/i,'p_cat'],[/ver mis pedidos/i,'p_mispedidos']],
+ p_mispedidos:[[/cat[aá]logo/i,'p_cat']]
+};
+const DRILL = {a_clientes:'a_perfil',a_clientes_f:'a_perfil',a_balance:'a_perfil',a_balifco:'a_perfil',a_almacenes:'a_perfil_alm',a_modelos:'a_modelo',a_mov:'m_ver_mov',a_perfil_mov:'m_ver_mov',a_edi:'m_edi_detalle',a_edi_transito:'m_ver_mov',a_pedidos:'a_pedido_det',p_cat:'p_modelo',p_fact:'p_fact_abierta',p_docs:'m_edc1'};
+
+function labelOf(el){ return norm(el.textContent).replace(/^[GM](?=Continuar)/,''); }
+function match(m,t){ return m instanceof RegExp ? m.test(t) : t===m; }
+function freeClick(e){
+  const t=e.target; const sid=st.cur; const app=appOf(sid);
+  const lab=t.closest('label'); if(lab && lab.querySelector('input[type=checkbox]')){ e.preventDefault(); toggleCheck(lab); return; }
+  if(t.closest('input,textarea,select')) return;
+  e.preventDefault();
+  const el=t.closest('a,button,[role=tab],[role=menuitem],[role=option]');
+  const aria=(el&&el.getAttribute('aria-label'))||'';
+  if(/men[uú]/i.test(aria)){ menuSheet(); return; }
+  if(/notificaci/i.test(aria)){ if(app==='portal') act(st.dev==='m'?'p_notif':'m_campana'); else toast('Aquí te llegan los avisos: movimientos por revisar, conciliaciones y pedidos.'); return; }
+  const nav=t.closest('nav');
+  if(nav && el){
+    const tx=labelOf(el);
+    if(app==='admin'){ if(GROUPS[tx]){ const r=el.getBoundingClientRect(); pop(r.right+6,r.top,tx,GROUPS[tx]); return; } if(NAV[tx]){ act(NAV[tx]); return; } }
+    else { for(const k in PNAV){ if(tx.startsWith(k)){ act(PNAV[k]); return; } } }
+    if(/buscar/i.test(tx)){ toast('Busca cualquier cliente, cuenta o número IFCO.'); return; }
+    if(/usuario|contacto/i.test(tx)){ toast('Aquí ves tu cuenta y cierras sesión.'); return; }
+  }
+  const cands=[]; if(el) cands.push(labelOf(el));
+  let a=t; for(let i=0;i<4&&a&&a!==frameEl;i++){ const tx=norm(a.textContent); if(tx.length && tx.length<70) cands.push(tx); a=a.parentElement; }
+  for(const [m,ac] of (R[sid]||[])){ for(const c of cands){ if(match(m,c)){ act(ac); return; } } }
+  if(el && el.getAttribute('role')==='tab'){ tabFilter(el); return; }
+  const dr=DRILL[sid];
+  if(dr){
+    const isDots = el && /^[⋯…]$/.test(norm(el.textContent));
+    if(!isDots && (t.closest('tbody tr') || (el && el.tagName==='A' && !nav) || /^ver (perfil|detalle)/i.test(aria) || (st.dev==='m' && findCard(t)))){ act(dr); return; }
+  }
+  if(el){ const tx=labelOf(el);
+    if(/^[⋯…]$/.test(tx)) { toast('Desde este menú: ver el detalle, corregir o cancelar.'); return; }
+    if(/post mvp|próximamente/i.test(tx)) { toast(POST); return; }
+    toast('Esta opción todavía no hace nada en el demo.');
+  }
+}
+function findCard(t){ let a=t; for(let i=0;i<8&&a&&a!==frameEl;i++){ const cs=getComputedStyle(a); if(parseFloat(cs.borderRadius)>=10 && cs.backgroundColor!=='rgba(0, 0, 0, 0)' && a.offsetHeight>60 && a.offsetHeight<400) return a; a=a.parentElement; } return null; }
+function tabFilter(el){
+  const list=el.parentElement; const sel=list.querySelector('[role=tab][aria-selected=true]');
+  if(sel && sel!==el){ const s1=sel.getAttribute('style'), s2=el.getAttribute('style'); sel.setAttribute('style',s2||''); el.setAttribute('style',s1||''); sel.setAttribute('aria-selected','false'); el.setAttribute('aria-selected','true'); }
+}
+function toggleCheck(lab){
+  const inp=lab.querySelector('input[type=checkbox]'); const all=/todos/i.test(inp.getAttribute('aria-label')||''); const v=!inp.checked;
+  const targets = all ? [...frameEl.querySelectorAll('label input[type=checkbox]')] : [inp];
+  targets.forEach(i=>{ i.checked=v; const sp=i.nextElementSibling; if(sp){ sp.style.background=v?'#5E7A3A':'#FFFFFF'; sp.style.boxShadow=v?'none':'inset 0 0 0 1.5px #9AA1A6'; const svg=sp.querySelector('svg'); if(svg) svg.style.visibility=v?'visible':'hidden'; } const tr=i.closest('tr'); if(tr) tr.style.background=v?'#F6F9F1':''; });
+}
+function act(a){ if(!a) return; if(typeof a==='function') return a(); if(a.startsWith('toast:')) return toast(a.slice(6)); go(a); }
+function go(id){ closeOverlays(); if(id.startsWith('m_')) return openModal(id); st.cur=id; render(); }
+
+async function openModal(id, inTour){
+  const sp=GEN[id]; const want = st.dev==='m' ? (sp.m||sp.d) : (sp.d||sp.m);
+  const html=await frag(want.f);
+  const m=document.createElement('div'); m.className='modal';
+  const maxW=Math.min(innerWidth-24, want.w); const z=Math.min(1,maxW/want.w);
+  m.innerHTML=`<div class="box" style="width:${want.w*z}px"><button class="x" aria-label="Cerrar"><svg width="16" height="16"><use href="#i-x"/></svg></button><div class="mf" style="zoom:${z}">${html}</div></div>`;
+  document.body.appendChild(m); modalEl=m;
+  m.addEventListener('click',e=>{
+    if(e.target===m || e.target.closest('.x')){ if(st.mode==='tour'){ next(); } else m.remove(); return; }
+    if(st.mode==='tour'){ e.preventDefault(); return; }
+    const el=e.target.closest('button,a'); if(!el) return; e.preventDefault();
+    const t=norm(el.textContent);
+    if(/cancelar|cerrar|regresar/i.test(t)){ m.remove(); return; }
+    if(/^(crear|guardar|agregar|enviar|confirmar|continuar)/i.test(t)){ m.remove(); toast('Listo. En el demo no se guarda nada, pero así se vería.'); }
+  });
+}
+function closeOverlays(){ document.querySelectorAll('.modal,.pop,.sheet').forEach(x=>x.remove()); modalEl=null; }
+function pop(x,y,title,opts){
+  closeOverlays(); const p=document.createElement('div'); p.className='pop';
+  p.innerHTML=`<div class="t">${title}</div>`+opts.map(o=>`<button data-a="${o[1]}">${o[0]}${o[2]?`<small>${o[2]}</small>`:''}</button>`).join('');
+  document.body.appendChild(p); const r=p.getBoundingClientRect();
+  p.style.left=Math.min(x, innerWidth-r.width-10)+'px'; p.style.top=Math.min(y, innerHeight-r.height-10)+'px';
+  p.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; p.remove(); act(b.dataset.a);});
+  setTimeout(()=>document.addEventListener('click',function h(ev){ if(!p.contains(ev.target)){p.remove();document.removeEventListener('click',h,true);} },true),0);
+}
+const MENU_ADMIN=[['Balance consolidado','a_balance'],['Movimientos','a_mov'],['Pedidos','a_pedidos'],['Clientes','a_clientes'],['Almacenes','a_almacenes'],['Balance IFCO','a_balifco'],['EDI · enviar a IFCO','a_edi'],['Destinos autorizados','a_destinos'],['Modelos','a_modelos'],['Analistas','a_analistas'],['Carga de balance','a_carga']];
+const MENU_PORTAL=[['Inicio','p_inicio'],['Movimientos','p_mov'],['Finanzas','p_fin'],['Documentos','p_docs'],['Pedidos','p_cat'],['Notificaciones','p_notif']];
+function sheetWith(title,items){
+  closeOverlays(); const s=document.createElement('div'); s.className='sheet';
+  s.innerHTML=`<div class="in"><div class="grab"></div><div class="pop" style="position:static;box-shadow:none;padding:0"><div class="t">${title}</div>`+items.map(o=>`<button data-a="${o[1]}">${o[0]}</button>`).join('')+'</div></div>';
+  document.body.appendChild(s);
+  s.addEventListener('click',e=>{ if(e.target===s){s.remove();return;} const b=e.target.closest('button'); if(!b)return; s.remove(); act(b.dataset.a); });
+}
+function menuSheet(){ appOf(st.cur)==='admin' ? sheetWith('MyCajas',MENU_ADMIN) : sheetWith('Portal del cliente',MENU_PORTAL); }
+function screensSheet(){ appOf(st.cur)==='admin' ? sheetWith('Pantallas del equipo de Cajas',MENU_ADMIN.concat([['Captura manual','a_manual'],['Importar CSV','a_csv'],['Perfil del cliente','a_perfil'],['Perfil del almacén','a_perfil_alm']])) : sheetWith('Pantallas del portal',MENU_PORTAL.concat([['Facturas','p_fact'],['Pagos','p_pagos'],['Mis documentos','p_misdocs'],['Mis pedidos','p_mispedidos']])); }
+
+/* ================= CONTROLES ================= */
+bAdmin.onclick=()=>{ if(appOf(st.cur)==='admin') return; if(st.mode==='tour') startTour('admin',0); else go(st.last.admin); };
+bPortal.onclick=()=>{ if(appOf(st.cur)==='portal') return; if(st.mode==='tour') startTour('portal',0); else go(st.last.portal); };
+bDesk.onclick=()=>{ if(st.dev==='d')return; st.dev='d'; render(); };
+bPhone.onclick=()=>{ if(st.dev==='m')return; st.dev='m'; render(); };
+addEventListener('resize',()=>{ clearTimeout(window._rz); window._rz=setTimeout(()=>render(),200); });
+
+/* ================= ARRANQUE ================= */
+const w=document.getElementById('welcome');
+function closeW(){ w.hidden=true; }
+document.getElementById('wAdmin').onclick=()=>{ closeW(); startTour('admin',0); };
+document.getElementById('wPortal').onclick=()=>{ closeW(); startTour('portal',0); };
+document.getElementById('wFree').onclick=()=>{ closeW(); st.cur='a_balance'; goFree(); render(); };
+const h=location.hash.slice(1); const tel=/-tel$/.test(h); const hh=h.replace(/-tel$/,'');
+if(tel) st.dev='m';
+let m;
+if((m=hh.match(/^tour-(admin|portal)(?:-(\d+))?$/))){ startTour(m[1], m[2]?(+m[2]-1):0); }
+else if(hh && GEN[hh.replace(/-/g,'_')]){ st.cur=hh.replace(/-/g,'_'); goFree(); render(); }
+else { w.hidden=false; st.cur='a_login'; render(); }
+})();
+</script>
+</body>
+</html>
