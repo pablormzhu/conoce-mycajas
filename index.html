@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Conoce MyCajas</title>
-<meta name="description" content="MyCajas: la plataforma de Cajas Agrícolas para gestionar nuestras cajas, nuestros clientes y nuestra operación.">
+<meta name="description" content="Conoce MyCajas, la plataforma de Cajas Agrícolas para gestionar sus cajas, atender a sus clientes y conectar a todas sus áreas.">
 <link rel="icon" href="img/logo-cajas.png">
 <style>
 
@@ -408,6 +408,47 @@ details.branch .inner{padding:4px 24px 28px}
 .tel-link{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-weight:700;color:var(--green);text-decoration:none}
 .tel-link svg{width:18px;height:18px}
 
+/* v4: contenido */
+.prose{max-width:70ch;display:grid;gap:16px;margin-top:18px;font-size:clamp(17px,1.5vw,19px);line-height:1.7;color:#30353a}
+.prose strong{color:var(--ink)}
+.fgrid{margin-top:clamp(28px,4vw,40px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fblock{display:flex;gap:16px;align-items:flex-start;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:20px 22px}
+.fblock .ic{width:44px;height:44px;flex:0 0 auto;border-radius:13px;background:var(--wash-2);color:var(--green-deep);display:flex;align-items:center;justify-content:center}
+.fblock .ic svg{width:23px;height:23px}
+.fblock h3{font-size:18px;line-height:1.3}
+.fblock p{font-size:15.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+@media (max-width:860px){.fgrid{grid-template-columns:1fr}}
+.pillars{margin-top:clamp(28px,4vw,44px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pillar{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:clamp(22px,3vw,30px);display:flex;flex-direction:column;gap:10px}
+.pillar .ic{width:50px;height:50px;border-radius:14px;background:var(--wash-2);color:var(--green-deep);display:flex;align-items:center;justify-content:center}
+.pillar .ic svg{width:26px;height:26px}
+.pillar h3{font-size:21px}
+.pillar p{font-size:16px;color:#3a4045;line-height:1.6}
+@media (max-width:860px){.pillars{grid-template-columns:1fr}}
+.steps6{margin-top:clamp(28px,4vw,40px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
+.step6{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:8px}
+.step6 .n{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.step6 .who{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--brown)}
+.step6 b{font-size:17px;letter-spacing:-.01em;line-height:1.3}
+.step6 p{font-size:15px;color:var(--muted);line-height:1.55}
+@media (max-width:1020px){.steps6{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.steps6{grid-template-columns:1fr}}
+.note{margin-top:14px;font-size:14px;color:var(--faint)}
+.day1{margin-top:clamp(28px,4vw,40px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+.day1 .box{border-radius:24px;padding:clamp(24px,3vw,34px)}
+.day1 .b1{background:var(--green);color:#fff}
+.day1 .b2{background:var(--cream)}
+.day1 h3{font-size:23px;color:inherit}
+.day1 .sub{margin-top:6px;font-size:15.5px;opacity:.9;line-height:1.55}
+.day1 ul{list-style:none;display:grid;gap:11px;margin-top:18px}
+.day1 li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;line-height:1.5}
+.day1 li svg{width:20px;height:20px;flex:0 0 auto;margin-top:2px}
+.day1 .b1 li svg{color:#C9DDAE}
+.day1 .b2 li svg{color:var(--amber)}
+@media (max-width:900px){.day1{grid-template-columns:1fr}}
+.closing.v4{grid-template-columns:1fr}
+.closing.v4 p{max-width:68ch}
+
 </style>
 </head>
 <body>
@@ -441,6 +482,12 @@ details.branch .inner{padding:4px 24px 28px}
 <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0L5 7ZM19 7l-3 7a3 3 0 0 0 6 0l-3-7ZM8 21h8"/></symbol>
 <symbol id="i-erp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
 <symbol id="i-phone2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.5a5 5 0 0 1 5.5 5"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/></symbol>
+<symbol id="i-check2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
 </defs></svg>
 
 <header class="top">
@@ -450,12 +497,13 @@ details.branch .inner{padding:4px 24px 28px}
       <span class="word"><span class="my">My</span><span class="cj">Cajas</span></span>
     </a>
     <nav class="chapters" aria-label="Capítulos">
-      <a href="#carta">Para el equipo</a>
-      <a href="#que-es">Qué es</a>
-      <a href="#informacion">Cómo funciona</a>
+      <a href="#carta">Conoce MyCajas</a>
+      <a href="#para-que">Para qué existe</a>
+      <a href="#activos">Control de activos</a>
       <a href="#portal">Para el cliente</a>
+      <a href="#areas">Áreas conectadas</a>
       <a href="#vivelo">Haz el recorrido</a>
-      <a href="#rumbo">Hacia dónde vamos</a>
+      <a href="#rumbo">Desde el primer día</a>
     </nav>
   </div>
 </header>
@@ -473,7 +521,7 @@ details.branch .inner{padding:4px 24px 28px}
       </div>
       <h1 class="reveal"><span class="my">My</span><span class="cj">Cajas</span></h1>
       <p class="sub reveal">El siguiente paso en la transformación digital de Cajas Agrícolas.</p>
-      <p class="lead reveal">Nuestras cajas, nuestros clientes y nuestra operación en un solo lugar: al día, conciliado con IFCO y en la compu o en el teléfono.</p>
+      <p class="lead reveal">La plataforma donde vamos a gestionar nuestras cajas, atender a nuestros clientes y trabajar entre áreas, con la información al día en la compu o en el teléfono.</p>
       <div class="ctas reveal">
         <a class="cta" href="#carta">Conócela <svg width="18" height="18"><use href="#i-arrow"/></svg></a>
         <a class="cta alt" href="#vivelo"><svg width="18" height="18"><use href="#i-play"/></svg> Haz el recorrido</a>
@@ -491,83 +539,85 @@ details.branch .inner{padding:4px 24px 28px}
   <div class="wrap letter">
     <div class="reveal">
       <span class="eyebrow">Para el equipo de Cajas</span>
-      <h2>Esto es de todos.</h2>
+      <h2>Conoce MyCajas.</h2>
     </div>
     <div class="body reveal">
-      <p>Estamos construyendo <strong>MyCajas</strong>, la plataforma donde va a vivir la operación de nuestras cajas. Queremos que la conozcas desde ahora, antes de que llegue.</p>
-      <p>La idea es sencilla: que la información trabaje para nosotros, para dedicar el tiempo a lo que importa: <strong>atender mejor a nuestros clientes, generar negocio y decidir con información</strong>.</p>
-      <p>Los cimientos técnicos los ponemos nosotros; lo que la hace valiosa es lo que el equipo de Cajas sabe de su operación. Por eso es para todo Cajas: para las áreas que participan desde el primer día y para las que se van a ir sumando.</p>
-      <p class="sign">El equipo de MyCajas</p>
+      <p>MyCajas es la plataforma donde va a vivir la operación de nuestras cajas. Queremos que la vayas conociendo desde ahora, para que cuando llegue ya sepas cómo se ve, qué vas a poder hacer en ella y cómo te va a ayudar en tu trabajo de todos los días.</p>
+      <p>Su propósito es que la información trabaje para nosotros. Que cada área tenga mejores herramientas para atender a nuestros clientes, generar negocio y tomar decisiones con información estratégica, tendencias e indicadores confiables, en lugar de invertir horas en armar reportes y cuadrar números.</p>
+      <p>MyCajas la ha construido un equipo de <strong>Cajas Agrícolas y BPM.io</strong>, y le hemos puesto mucho empeño. La gente de Cajas ha aportado lo más valioso, que es el conocimiento de la operación: cómo se mueven las cajas, cómo se trabaja con IFCO y qué necesitan los clientes. BPM.io ha aportado la parte técnica. Por eso, desde el primer día, MyCajas es de Cajas Agrícolas.</p>
+      <p>Esto apenas empieza. Vamos a seguir integrando más áreas y más funciones, y el equipo que la construye va a seguir creciendo. Mientras tanto, queremos que la conozcas y que la sientas tuya.</p>
+      <p class="sign">El equipo de MyCajas · Cajas Agrícolas y BPM.io</p>
     </div>
   </div>
 </section>
 
-<!-- QUÉ ES -->
-<section class="chapter" id="que-es">
+<!-- PARA QUÉ EXISTE -->
+<section class="chapter" id="para-que">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">Qué es MyCajas</span>
-      <h2>Una sola plataforma para todo lo que se mueve en Cajas.</h2>
+      <span class="eyebrow">Para qué existe MyCajas</span>
+      <h2>Toda la operación de nuestras cajas, en un solo lugar y al día.</h2>
+      <div class="prose">
+        <p>Todos los días se mueven miles de cajas entre nuestros clientes, nuestros almacenes, las agencias aduanales e IFCO. Cada movimiento afecta el balance de un cliente, lo que reportamos a IFCO, lo que se factura y lo que se cobra. MyCajas reúne toda esa información en un solo lugar, la mantiene al día y la pone en manos de cada persona que la necesita, en el momento en que la necesita.</p>
+      </div>
     </div>
-    <div class="forest">
-      <div class="tree card reveal">
+    <div class="pillars">
+      <div class="pillar reveal">
         <span class="ic"><svg><use href="#i-box"/></svg></span>
-        <h3>Gestión de activos</h3>
-        <p>Somos dueños de nuestro balance, conciliado con IFCO movimiento por movimiento.</p>
+        <h3>Ser dueños de nuestro balance</h3>
+        <p>Llevamos nuestro propio balance de cajas, cliente por cliente, y lo conciliamos con IFCO movimiento por movimiento. Cualquier diferencia aparece a tiempo y se corrige con movimientos que IFCO reconoce, sin frenar la operación.</p>
       </div>
-      <div class="tree card reveal">
+      <div class="pillar reveal">
         <span class="ic"><svg><use href="#i-store"/></svg></span>
-        <h3>Portal de clientes</h3>
-        <p>Cada cliente con sus números, sus documentos y su tienda en línea.</p>
+        <h3>Atender mejor a nuestros clientes</h3>
+        <p>Cada cliente tiene su propio portal, donde ve sus cajas, sus días, sus movimientos y su estado de cuenta, reporta, corrige y hace sus pedidos en línea. MyCajas le recuerda lo que le toca para que esté siempre en regla con nosotros y con IFCO.</p>
       </div>
-      <div class="tree card reveal">
+      <div class="pillar reveal">
         <span class="ic"><svg><use href="#i-link"/></svg></span>
-        <h3>Áreas conectadas</h3>
-        <p>Cuando un área avanza, la siguiente se entera sola.</p>
+        <h3>Que las áreas trabajen juntas</h3>
+        <p>Ventas, control de activos, cobranza, almacenes y contabilidad trabajan sobre la misma información. Cuando un área avanza, las demás se enteran y pueden seguir con su parte, sin perseguir datos ni esperar respuestas.</p>
       </div>
-      <div class="tree card reveal">
+      <div class="pillar reveal">
         <span class="ic"><svg><use href="#i-spark"/></svg></span>
-        <h3>Información a la mano</h3>
-        <p>Al día, en la compu o en el teléfono, sin armar reportes ni Excel.</p>
+        <h3>Decidir con información</h3>
+        <p>Métricas, tendencias e indicadores calculados al día, que sustituyen el Excel y los dashboards que hoy se arman a mano. Están en la compu o en el teléfono, para que nadie dependa de estar en la oficina para saber cómo vamos.</p>
       </div>
-    </div>
-    <div class="chips reveal" aria-label="Quiénes participan">
-      <span>Control de activos</span><span>Ventas</span><span>Cobranza</span><span>Almacenes</span><span>Contabilidad</span><span>Dirección</span><span class="ext">Clientes</span><span class="ext">IFCO</span><span class="ext">CONTPAQi</span><span class="more">y las áreas que se sumen</span>
     </div>
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
-<section class="chapter" id="informacion">
+<!-- CONTROL DE ACTIVOS -->
+<section class="chapter" id="activos">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">Cómo funciona</span>
-      <h2>Se reporta una vez, se revisa sola y se concilia con IFCO.</h2>
-      <p class="lead">Venga de donde venga, cada movimiento sigue el mismo camino hasta que nuestro balance y el de IFCO dicen lo mismo. Toca cada paso.</p>
+      <span class="eyebrow">Control de activos</span>
+      <h2>Una herramienta hecha a la medida para el equipo que cuida nuestras cajas.</h2>
+      <p class="lead">Los movimientos llegan de donde se generan. El analista los revisa y los envía a IFCO, IFCO contesta y MyCajas compara uno por uno. El trabajo del analista deja de ser capturar y cuadrar para enfocarse en revisar, resolver y dar seguimiento. Toca cada paso para ver cómo funciona.</p>
     </div>
 
     <div class="pipe reveal" id="pipe">
       <div class="pcol">
-        <span class="lbl">1 · Llega</span>
-        <button class="pnode" data-p="analista"><span class="ic"><svg><use href="#i-user"/></svg></span><span><b>El equipo de Cajas</b><p>A mano o con un Excel</p></span></button>
-        <button class="pnode" data-p="cliente"><span class="ic"><svg><use href="#i-store"/></svg></span><span><b>El cliente</b><p>Desde su portal</p></span></button>
-        <button class="pnode" data-p="contpaqi"><span class="ic"><svg><use href="#i-erp"/></svg></span><span><b>CONTPAQi y sistemas</b><p>De forma automática</p><span class="tag">Lo que viene</span></span></button>
+        <span class="lbl">1 · Llega de donde se genera</span>
+        <button class="pnode" data-p="contpaqi"><span class="ic"><svg><use href="#i-erp"/></svg></span><span><b>CONTPAQi</b><p>Facturas, cancelaciones, refacturas y pedimentos</p></span></button>
+        <button class="pnode" data-p="cliente"><span class="ic"><svg><use href="#i-store"/></svg></span><span><b>El portal del cliente</b><p>El cliente reporta a mano o con su Excel</p></span></button>
+        <button class="pnode" data-p="api"><span class="ic"><svg><use href="#i-api"/></svg></span><span><b>Los sistemas del cliente</b><p>Reportes automáticos por conexión directa</p></span></button>
+        <button class="pnode" data-p="analista"><span class="ic"><svg><use href="#i-user"/></svg></span><span><b>El equipo de Cajas</b><p>Captura a mano o carga de Excel</p></span></button>
       </div>
       <div class="parrow"><svg><use href="#i-arrow"/></svg></div>
       <div class="pcol">
-        <span class="lbl">2 · Se revisa</span>
-        <button class="pnode big" data-p="revisa"><span class="ic"><svg><use href="#i-shield"/></svg></span><span><b>MyCajas revisa</b><p>Completo, sin repetir y con la cuenta correcta</p></span></button>
+        <span class="lbl">2 · El analista revisa y envía</span>
+        <button class="pnode big" data-p="revisa"><span class="ic"><svg><use href="#i-shield"/></svg></span><span><b>Revisión en el EDI</b><p>MyCajas marca lo que no cuadra y el analista decide qué se envía</p></span></button>
       </div>
       <div class="parrow"><svg><use href="#i-arrow"/></svg></div>
       <div class="pcol">
-        <span class="lbl">3 · Va a IFCO</span>
-        <button class="pnode big ifco" data-p="envia"><span class="ic"><svg><use href="#i-send"/></svg></span><span><b>Se envía a IFCO</b><p>Con un clic; IFCO responde</p></span></button>
+        <span class="lbl">3 · IFCO contesta</span>
+        <button class="pnode big ifco" data-p="ifco"><span class="ic"><svg><use href="#i-send"/></svg></span><span><b>Conexión con IFCO</b><p>Se envía con un clic y la respuesta de IFCO llega sola</p></span></button>
       </div>
       <div class="parrow"><svg><use href="#i-arrow"/></svg></div>
       <div class="pcol pout">
         <span class="lbl">4 · Se concilia</span>
-        <button class="pnode" data-p="coincide"><span class="ic"><svg><use href="#i-check"/></svg></span><span><b>Coincide</b><p>Se aprueba y cuenta en el balance</p></span></button>
-        <button class="pnode" data-p="nocoincide"><span class="ic"><svg><use href="#i-alert"/></svg></span><span><b>No coincide</b><p>Salta, se revisa y se corrige</p></span></button>
+        <button class="pnode" data-p="coincide"><span class="ic"><svg><use href="#i-check"/></svg></span><span><b>Coincide</b><p>Se aprueba y entra al balance</p></span></button>
+        <button class="pnode" data-p="nocoincide"><span class="ic"><svg><use href="#i-alert"/></svg></span><span><b>No coincide</b><p>Pasa a conciliación con el analista</p></span></button>
       </div>
     </div>
     <div class="pdetail reveal" aria-live="polite">
@@ -579,12 +629,20 @@ details.branch .inner{padding:4px 24px 28px}
         <div class="frame" data-zoom="img/adm_balance.webp" data-title="Balance consolidado"><div class="bar"><i></i><i></i><i></i><span class="url">MyCajas · Balance consolidado</span></div><img src="img/adm_balance.webp" alt="Balance consolidado de MyCajas" loading="lazy"></div>
         <div class="mini-phone"><div class="sc"><img src="img/tel_perfil.webp" alt="Perfil del cliente en el teléfono" loading="lazy"></div></div>
       </div>
-      <div class="vals reveal">
-        <div class="val"><span class="ic"><svg><use href="#i-scale"/></svg></span><div><b>Nuestro balance, al día</b><p>Cada cuenta con su balance, sus días y su semáforo. El nuestro y el de IFCO, alineados.</p></div></div>
-        <div class="val"><span class="ic"><svg><use href="#i-alert"/></svg></span><div><b>Lo que se desalinea, salta</b><p>Cualquier diferencia con IFCO se detecta, se revisa y se corrige, sin frenar la operación.</p></div></div>
-        <div class="val"><span class="ic"><svg><use href="#i-check"/></svg></span><div><b>Cuidamos a nuestros clientes</b><p>Vemos a tiempo quién necesita reportar o mejorar sus días, antes de que se vuelva un problema.</p></div></div>
-        <a class="demo-link" href="demo/demo.html#tour-admin" style="justify-self:start"><svg><use href="#i-play"/></svg>Haz el recorrido del equipo</a>
+      <div class="reveal">
+        <h3 style="font-size:22px;color:var(--green-title)">Todo lo que el equipo tiene a la mano</h3>
+        <p style="margin-top:10px;color:var(--muted);font-size:16px;line-height:1.6">Desde el balance de toda la operación hasta el detalle de un solo movimiento, con dos clics y sin abrir un archivo.</p>
+        <a class="demo-link" href="demo/demo.html#tour-admin" style="margin-top:18px"><svg><use href="#i-play"/></svg>Haz el recorrido del equipo de Cajas</a>
       </div>
+    </div>
+
+    <div class="fgrid">
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-scale"/></svg></span><div><h3>Dos balances, cada uno en su lugar</h3><p>El balance de Cajas, con todo lo reportado, y el de IFCO, con lo que IFCO aprobó, en pantallas separadas para que nadie analice con la vista equivocada. Los dos con días en mano, días de suministro y su semáforo.</p></div></div>
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-user"/></svg></span><div><h3>El perfil de cada cliente, almacén y modelo</h3><p>Su balance por modelo de caja, sus días, sus entradas y salidas, sus movimientos, sus cuentas IFCO y su analista, todo en una sola pantalla.</p></div></div>
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-table"/></svg></span><div><h3>Movimientos que se encuentran en segundos</h3><p>Cada movimiento con su estatus ante IFCO, de dónde vino y quién lo reportó. Se filtra como en Excel por fechas, cuenta, modelo, delivery note o estatus, y se exporta cuando se necesita.</p></div></div>
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-alert"/></svg></span><div><h3>Conciliación movimiento por movimiento</h3><p>Lo que IFCO registra distinto, lo que no confirma a tiempo o lo que registra sin que lo hayamos enviado se marca para revisión. Las correcciones y cancelaciones se envían de forma que IFCO las reconozca, y todo queda registrado para auditarlo.</p></div></div>
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-users"/></svg></span><div><h3>Cada analista con sus clientes</h3><p>Cada cliente tiene su analista asignado, y reasignar uno o varios es cosa de un momento. Así cada quien sabe qué le toca y a quién darle seguimiento.</p></div></div>
+      <div class="fblock reveal"><span class="ic"><svg><use href="#i-check"/></svg></span><div><h3>Pensada para la vida real</h3><p>Correcciones, cancelaciones, devoluciones, refacturas, entregas partidas en varias líneas y movimientos de agencias aduanales. Cada caso tiene su camino y ninguno detiene la operación.</p></div></div>
     </div>
   </div>
 </section>
@@ -594,7 +652,8 @@ details.branch .inner{padding:4px 24px 28px}
   <div class="wrap">
     <div class="reveal">
       <span class="eyebrow">Para el cliente</span>
-      <h2>Su información en la punta de los dedos.</h2>
+      <h2>Cada cliente con su información en la punta de los dedos.</h2>
+      <p class="lead">El portal de clientes lleva MyCajas hasta ellos. Ven cómo están, reportan sin depender de un correo, consultan sus documentos y hacen sus pedidos, y nosotros les damos un mejor servicio con información clara para los dos lados.</p>
     </div>
     <div class="feat">
       <div class="shot reveal">
@@ -602,9 +661,11 @@ details.branch .inner{padding:4px 24px 28px}
         <div class="mini-phone"><div class="sc"><img src="img/tel_pinicio.webp" alt="Portal del cliente en el teléfono" loading="lazy"></div></div>
       </div>
       <div class="vals reveal">
-        <div class="val"><span class="ic"><svg><use href="#i-scale"/></svg></span><div><b>Sus números</b><p>Su balance, sus días, sus movimientos y cómo mejorarlos.</p></div></div>
-        <div class="val"><span class="ic"><svg><use href="#i-doc"/></svg></span><div><b>Sus documentos</b><p>Facturas, estados de cuenta y su línea de crédito, siempre al día.</p></div></div>
-        <div class="val"><span class="ic"><svg><use href="#i-store"/></svg></span><div><b>Su tienda en línea</b><p>Pide sus cajas con su orden de compra, y Cajas le da seguimiento.</p></div></div>
+        <div class="val"><span class="ic"><svg><use href="#i-scale"/></svg></span><div><b>Sus cajas y sus métricas</b><p>Su balance por modelo, sus días en mano y de suministro, sus tendencias y consejos claros para mejorar sus números.</p></div></div>
+        <div class="val"><span class="ic"><svg><use href="#i-table"/></svg></span><div><b>Sus movimientos</b><p>Los reporta a mano, con su Excel o de forma automática desde sus sistemas, ve en qué estatus va cada uno y pide una corrección desde el mismo movimiento.</p></div></div>
+        <div class="val"><span class="ic"><svg><use href="#i-doc"/></svg></span><div><b>Sus finanzas y documentos</b><p>Sus facturas, sus pagos, su línea de crédito y su estado de cuenta en PDF. También carga y actualiza sus documentos para estar en regla.</p></div></div>
+        <div class="val"><span class="ic"><svg><use href="#i-store"/></svg></span><div><b>Su tienda en línea</b><p>Pide sus cajas con su orden de compra, elige si pasa por ellas o se las envían y sigue cómo va su pedido.</p></div></div>
+        <div class="val"><span class="ic"><svg><use href="#i-bell"/></svg></span><div><b>Recordatorios a tiempo</b><p>Avisos para reportar, para mejorar sus días y de cobranza, para que nada le tome por sorpresa.</p></div></div>
         <a class="demo-link" href="demo/demo.html#tour-portal" style="justify-self:start"><svg><use href="#i-play"/></svg>Haz el recorrido del cliente</a>
       </div>
     </div>
@@ -621,16 +682,18 @@ details.branch .inner{padding:4px 24px 28px}
   <div class="wrap">
     <div class="reveal">
       <span class="eyebrow">Áreas conectadas</span>
-      <h2>Cada acción avisa a la siguiente.</h2>
-      <p class="lead">Así viaja un pedido en línea por Cajas, sin correos de ida y vuelta ni llamadas para preguntar cómo va.</p>
+      <h2>Pensada para que los procesos fluyan entre áreas.</h2>
+      <p class="lead">MyCajas está diseñada sobre la idea de que ningún área trabaja sola. Cada paso de un proceso le entrega a la siguiente área lo que necesita para continuar, y le avisa en el momento. Así la comunicación mejora, nadie persigue información y cada quien se enfoca en su parte. Un pedido en línea lo muestra bien.</p>
     </div>
-    <div class="chain">
-      <div class="link reveal"><span class="n">1</span><span class="who">Cliente · Ventas</span><b>Llega un pedido</b><p>El cliente pide en línea y su vendedor se entera.</p><span class="tag mvp">Primer release</span></div>
-      <div class="link reveal"><span class="n">2</span><span class="who">Control de activos · Cobranza</span><b>Se aprueba</b><p>Con las métricas y el crédito del cliente a la vista.</p><span class="tag mvp">Primer release</span></div>
-      <div class="link reveal v"><span class="n">3</span><span class="who">Almacén</span><b>Se surte</b><p>El almacén ve qué surtir, cuánto y para cuándo.</p><span class="tag">Lo que viene</span></div>
-      <div class="link reveal v"><span class="n">4</span><span class="who">Todas las áreas</span><b>Todos se enteran</b><p>Se avisa al vendedor, a control de activos y a cobranza.</p><span class="tag">Lo que viene</span></div>
-      <div class="link reveal v"><span class="n">5</span><span class="who">Contabilidad</span><b>Se factura</b><p>La factura sale con todo lo necesario.</p><span class="tag">Lo que viene</span></div>
+    <div class="steps6">
+      <div class="step6 reveal"><span class="n">1</span><span class="who">Cliente</span><b>El cliente hace su pedido</b><p>Desde su portal elige el modelo y la cantidad, sube su orden de compra y dice si pasa por las cajas o se las envían.</p></div>
+      <div class="step6 reveal"><span class="n">2</span><span class="who">Control de activos · Cobranza · Ventas</span><b>La aprobación llega con todo para decidir</b><p>Las métricas de cajas del cliente, su cobranza y su línea de crédito, y los almacenes más cercanos con su inventario, en un solo lugar.</p></div>
+      <div class="step6 reveal"><span class="n">3</span><span class="who">Quien aprueba</span><b>Se aprueba desde MyCajas o desde el correo</b><p>Si se aprueba, sigue su camino. Si no, el vendedor sabe el motivo y lo platica con el cliente.</p></div>
+      <div class="step6 reveal"><span class="n">4</span><span class="who">Almacén</span><b>El pedido entra al backlog del almacén</b><p>Con todo lo que hay que surtir. El almacén lo planea y lo surte completo o por partes.</p></div>
+      <div class="step6 reveal"><span class="n">5</span><span class="who">Cliente · Cobranza · Ventas · Control de activos</span><b>Todos se enteran al surtir</b><p>Se avisa al cliente, a cobranza, al vendedor y a control de activos, para que cada quien siga con su parte del proceso.</p></div>
+      <div class="step6 reveal"><span class="n">6</span><span class="who">Contabilidad · Cliente</span><b>Se factura y el cliente recibe su aviso</b><p>Con la factura emitida, el inventario, los movimientos y el balance quedan al día solos.</p></div>
     </div>
+    <p class="note reveal">Así está diseñado el proceso de punta a punta. Sus piezas se van encendiendo por etapas.</p>
   </div>
 </section>
 
@@ -640,7 +703,7 @@ details.branch .inner{padding:4px 24px 28px}
     <div class="reveal">
       <span class="eyebrow">Haz el recorrido</span>
       <h2>Te llevamos de la mano por MyCajas.</h2>
-      <p class="lead">Un recorrido guiado por las pantallas reales, con datos de ejemplo. Te dice qué es cada cosa y dónde picarle para avanzar.</p>
+      <p class="lead">Un recorrido guiado por las pantallas reales, con datos de ejemplo. Te explica qué es cada cosa y te dice dónde picarle para avanzar, en la compu o en tu teléfono.</p>
     </div>
     <div class="live two">
       <a class="door reveal" href="demo/demo.html#tour-admin">
@@ -656,59 +719,48 @@ details.branch .inner{padding:4px 24px 28px}
   </div>
 </section>
 
-<!-- HACIA DÓNDE VAMOS -->
+<!-- DESDE EL PRIMER DÍA -->
 <section class="chapter" id="rumbo">
   <div class="wrap">
     <div class="reveal">
-      <span class="eyebrow">Hacia dónde vamos</span>
-      <h2>Estamos poniendo los cimientos.</h2>
-      <p class="lead">Ya estamos muy cerca del primer release, el primer paso de una plataforma que va a crecer con el equipo.</p>
+      <span class="eyebrow">Desde el primer día</span>
+      <h2>Lo que trae MyCajas y hacia dónde crece.</h2>
+      <p class="lead">Ya estamos muy cerca del primer release. Esto es lo que vas a encontrar desde el arranque, y es sólo el comienzo.</p>
     </div>
-    <div class="road">
-      <div class="stage-col s1 reveal">
-        <span class="eyebrow" style="color:#E9F2DF">Primer release</span>
-        <h3>Operar MyCajas</h3>
+    <div class="day1">
+      <div class="box b1 reveal">
+        <h3>Desde el primer release</h3>
+        <p class="sub">Todo lo necesario para operar el control de activos y atender a los clientes desde MyCajas.</p>
         <ul>
-          <li>Balance y perfiles de clientes y almacenes</li>
-          <li>Reportar movimientos a mano o con Excel</li>
-          <li>Envío a IFCO y conciliación</li>
-          <li>Portal de clientes y pedidos en línea</li>
+          <li><svg><use href="#i-check2"/></svg>Balance consolidado y balance de IFCO, con días en mano, días de suministro y semáforo por cuenta</li>
+          <li><svg><use href="#i-check2"/></svg>Perfiles de clientes, almacenes y modelos, y cada analista con sus clientes</li>
+          <li><svg><use href="#i-check2"/></svg>Movimientos con su estatus ante IFCO, filtros y exportación a Excel</li>
+          <li><svg><use href="#i-check2"/></svg>Reporte de movimientos a mano, con Excel y de forma automática desde los sistemas de los clientes</li>
+          <li><svg><use href="#i-check2"/></svg>Conexión con CONTPAQi para facturas, cancelaciones, refacturas y pedimentos</li>
+          <li><svg><use href="#i-check2"/></svg>Envío a IFCO, respuesta automática y conciliación movimiento por movimiento</li>
+          <li><svg><use href="#i-check2"/></svg>Portal de clientes con sus métricas, sus movimientos, su estado de cuenta y pedidos en línea con aviso a las áreas</li>
+          <li><svg><use href="#i-check2"/></svg>Acceso con tu cuenta de Google de Cajas, en la compu y en el teléfono</li>
         </ul>
       </div>
-      <div class="stage-col s2 reveal">
-        <span class="eyebrow">Lo que sigue</span>
-        <h3>Conectar y automatizar</h3>
+      <div class="box b2 reveal">
+        <h3>Y crece contigo</h3>
+        <p class="sub" style="color:var(--muted)">MyCajas está hecha para seguir creciendo con el equipo. Vamos a seguir integrando más áreas y más procesos.</p>
         <ul>
-          <li>Conexión con CONTPAQi</li>
-          <li>Reportes automáticos de los clientes</li>
-          <li>Aprobación de pedidos entre áreas</li>
-          <li>Facturas y cobranza en el portal</li>
-        </ul>
-      </div>
-      <div class="stage-col s3 reveal">
-        <span class="eyebrow">Visión</span>
-        <h3>Crecer con el equipo</h3>
-        <ul>
-          <li>Almacenes conectados</li>
-          <li>CRM y otras herramientas</li>
-          <li>Inteligencia artificial y lectura de chips</li>
-          <li>Módulos para cada área</li>
+          <li><svg><use href="#i-plus"/></svg>Más áreas y más procesos dentro de la plataforma, empezando por almacenes</li>
+          <li><svg><use href="#i-plus"/></svg>Módulos específicos para cada área, donde más le ayuden</li>
+          <li><svg><use href="#i-plus"/></svg>Inteligencia artificial para analizar y anticipar</li>
+          <li><svg><use href="#i-plus"/></svg>Lectura de chips en las cajas y más tecnología en campo</li>
+          <li><svg><use href="#i-plus"/></svg>Conexión con el CRM y con otras herramientas que ya usamos</li>
         </ul>
       </div>
     </div>
 
-    <div class="closing reveal">
+    <div class="closing v4 reveal">
       <div>
         <span class="eyebrow">De Cajas para Cajas</span>
-        <h2>Más que un sistema, una forma de trabajar.</h2>
-        <p>MyCajas está construida por los expertos: el equipo de Cajas. A medida que madure va a llegar a más áreas y a más funciones, y ustedes son parte de ese desarrollo.</p>
-        <p>Si tu área tiene un cuello de botella o una idea, ese puede ser el siguiente paso. Platícanosla.</p>
-      </div>
-      <div class="principles">
-        <div><b>Las áreas se hablan</b><span>Lo que hace una le llega a la siguiente.</span></div>
-        <div><b>La información trabaja para nosotros</b><span>Menos tiempo armando números.</span></div>
-        <div><b>Desde donde estés</b><span>En la compu o en el teléfono.</span></div>
-        <div><b>Calidad de clase mundial</b><span>Para un equipo de clase mundial.</span></div>
+        <h2>MyCajas va a ser lo que el equipo haga de ella.</h2>
+        <p>La construimos con el conocimiento de la gente de Cajas, y así va a seguir creciendo: con lo que cada área vaya proponiendo. Mientras más la conozcas, mejor vas a poder decirnos qué te haría el trabajo más fácil, qué proceso conviene llevar a la plataforma y qué información te gustaría tener a la mano.</p>
+        <p>Date una vuelta por el recorrido, platícalo con tu equipo y comparte tus ideas. Estamos construyendo algo de clase mundial para un equipo de clase mundial.</p>
       </div>
     </div>
   </div>
@@ -718,7 +770,7 @@ details.branch .inner{padding:4px 24px 28px}
   <div class="wrap">
     <b>MyCajas</b>
     Cajas Agrícolas de México
-    <p class="made">Con BPM.io · Pantallas y datos de ejemplo</p>
+    <p class="made">Hecho por el equipo de Cajas Agrícolas y BPM.io · Pantallas y datos de ejemplo</p>
   </div>
 </footer>
 </main>
@@ -752,13 +804,14 @@ details.branch .inner{padding:4px 24px 28px}
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)close()});
 
   const P={
-    analista:['El equipo de Cajas reporta','A mano, uno por uno, o subiendo un Excel con muchos a la vez. Si algo falta o ya se había reportado, MyCajas lo dice antes de crear nada.'],
-    cliente:['El cliente reporta','Desde su portal reporta sus entradas y salidas, y ve al momento cómo van. También puede pedir una corrección.'],
-    contpaqi:['Llega solo','Las facturas y los pedimentos de CONTPAQi, y los movimientos de los sistemas de los clientes, llegarán de forma automática para no capturar dos veces. Es lo que sigue después del primer release.'],
-    revisa:['MyCajas revisa','Que esté completo, que la cuenta exista y que no se haya reportado antes. Lo dudoso se marca para revisarlo; lo repetido no se crea.'],
-    envia:['Se envía a IFCO','Con un clic. Mientras IFCO lo revisa, se ve en tránsito. IFCO responde y MyCajas compara movimiento por movimiento.'],
-    coincide:['Coincide: se aprueba','Lo que IFCO registró igual a lo que enviamos se aprueba y cuenta en el balance.'],
-    nocoincide:['No coincide: se corrige','Si IFCO lo registró distinto, no lo confirmó a tiempo o registró algo que no enviamos, salta: se revisa, se decide y se envía la corrección, que IFCO tiene que reconocer.']
+    contpaqi:['Desde CONTPAQi','Las facturas, cancelaciones, refacturas y pedimentos que se registran en CONTPAQi llegan solos a MyCajas como movimientos por revisar. Lo que se factura ya no se vuelve a capturar.'],
+    cliente:['Desde el portal del cliente','El cliente reporta sus entradas y salidas desde su portal, uno por uno o subiendo su Excel, y ve al momento en qué estatus va cada movimiento.'],
+    api:['Desde los sistemas del cliente','Los clientes que lo prefieran mandan sus movimientos directo desde sus propios sistemas, sin capturar nada, y llegan a MyCajas igual que los demás.'],
+    analista:['Desde el equipo de Cajas','El analista también puede capturar a mano, hasta cinco movimientos a la vez, o subir un Excel con muchos. Las cuentas se autocompletan del catálogo.'],
+    revisa:['El analista revisa en el EDI','Todo lo reportado llega a la misma pantalla, con su origen a la vista. MyCajas avisa lo que no cuadra, como un movimiento repetido, una cuenta que no existe o un dato que falta, y el analista decide qué se envía y qué se corrige antes.'],
+    ifco:['Se envía a IFCO y la respuesta llega sola','Con un clic se envía a IFCO. Mientras IFCO lo revisa se ve como en tránsito, y la respuesta de IFCO llega a MyCajas de forma automática, sin descargar ni subir archivos.'],
+    coincide:['Si coincide, se aprueba','Cuando lo que IFCO registró es igual a lo que enviamos, el movimiento se aprueba y entra al balance. Nuestro balance y el de IFCO dicen lo mismo.'],
+    nocoincide:['Si no coincide, pasa a conciliación','Si IFCO lo registró distinto, no lo confirmó a tiempo o registró algo que no enviamos, MyCajas lo marca para que el analista lo revise. Se decide qué pasó y se envía la corrección o la cancelación de forma que IFCO la reconozca. Todo queda registrado.']
   };
   const pnodes=[...document.querySelectorAll('.pnode')];
   function pshow(k){
@@ -766,7 +819,7 @@ details.branch .inner{padding:4px 24px 28px}
     document.getElementById('pTitle').textContent=P[k][0];document.getElementById('pText').textContent=P[k][1];
   }
   pnodes.forEach(n=>n.addEventListener('click',()=>{pshow(n.dataset.p); if(innerWidth<=1020){ document.querySelector('.pdetail').scrollIntoView({behavior:'smooth',block:'center'}); }}));
-  pshow('analista');
+  pshow('contpaqi');
 })();
 </script>
 </body>
